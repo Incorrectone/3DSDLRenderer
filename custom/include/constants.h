@@ -1,14 +1,24 @@
 #pragma once
+
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-// define your own namespace to hold constants
+#include <vector>
+#include <tuple>
+
 namespace constants
 {
+	const std::vector<int> ORIGIN({0 ,0 ,0});
+    const std::tuple<int, int, int> BACKGROUND_COLOR = std::make_tuple(255, 255, 255);
 
-    // constants have internal linkage by default
-    const int SCREEN_WIDTH = 640;
-    const int SCREEN_HEIGHT = 480;
+    constexpr int VEIWPORT_WIDTH { 1 };
+    constexpr int VEIWPORT_HEIGHT { 1 };
+    constexpr int VEIWPORT_DISTANCE { 1 };
+    constexpr int FIELDOFVIEW { 53 }; // in Degrees
+
+
+    constexpr int SCREEN_WIDTH { 600 };
+    constexpr int SCREEN_HEIGHT { 600 };
 
 }
 #endif
