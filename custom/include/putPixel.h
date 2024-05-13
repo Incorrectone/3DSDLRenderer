@@ -5,6 +5,10 @@
 
 #include "../../external/SDL2/include/SDL.h"
 
-int putPixel(SDL_Surface* surface, int canvasX, int canvasY, Uint32 color);
+/*  
+    Automatically Converts Canvas Coordinates into Screen Coordinates
+    Use SDL_MapRGB or SDL_MapRGBA to have color the Screen Surface->Format 
+*/
+void putPixel(SDL_Surface* surface, int canvasX, int canvasY, Uint32 color);
 
 #endif
