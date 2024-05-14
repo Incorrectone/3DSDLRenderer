@@ -3,23 +3,22 @@
 #ifndef SHAPES_H
 #define SHAPES_H
 
-#include <vector>
-#include <tuple>
+#include "vectors.h"
 
 namespace shapes{
     // A simple sphere
     typedef struct SPHERE_S {
-        std::vector<double> center;
+        VEC::VECTOR3D center;
         double radius;
-        std::tuple<int, int, int> color;
+        VEC::VECTOR3Di color;
         int valid;
     } SPHERE;
 
     // Initilizes a sphere, with valid key = 1
-    shapes::SPHERE initSphere(
-        std::vector<double> center,
+    SPHERE initSphere(
+        VEC::VECTOR3D center,
         double radius,
-        std::tuple<int, int, int> color
+        VEC::VECTOR3Di color
     );
 }
 

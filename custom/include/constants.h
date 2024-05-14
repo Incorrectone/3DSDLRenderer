@@ -3,22 +3,21 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#include <vector>
-#include <tuple>
+#include "vectors.h"
 
 namespace constants
 {
-	const std::vector<int> ORIGIN({0 ,0 ,0});
-    const std::tuple<int, int, int> BACKGROUND_COLOR = std::make_tuple(255, 255, 255);
+	const VEC::VECTOR3D ORIGIN({0 ,0 ,0});
+    const VEC::VECTOR3Di BACKGROUND_COLOR({0, 0, 0});
 
-    constexpr int VEIWPORT_WIDTH { 1 };
+    constexpr double VEIWPORT_WIDTH { 1.333 };
     constexpr int VEIWPORT_HEIGHT { 1 };
     constexpr int VEIWPORT_DISTANCE { 1 };
     constexpr int FIELDOFVIEW { 53 }; // in Degrees
 
 
-    constexpr int SCREEN_WIDTH { 600 };
-    constexpr int SCREEN_HEIGHT { 600 };
+    constexpr int SCREEN_WIDTH { 640 };
+    constexpr int SCREEN_HEIGHT { 480 };
 
 }
 #endif

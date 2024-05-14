@@ -4,9 +4,9 @@
 #define VIEWPORT_H
 
 #include "shapes.h"
+#include "shader.h"
 
-#include <vector>
-#include <tuple>
+#include "vectors.h"
 
 namespace viewport{
     
@@ -14,14 +14,14 @@ namespace viewport{
         Since Viewport is a screen in 3D
         We nee to convert Canvas Coordinates <2D> in Veiwport Coords <3D>
     */
-    std::vector<double> CanvasToViewport(int canvasX, int canvasY);
+    VEC::VECTOR3D CanvasToViewport(int canvasX, int canvasY);
 
     /*
         Checks whether a ray intersects a sphere, with respect to Camera and viewport coordinates
     */
-    std::tuple<double, double> IntersectRaySphere(
-        std::vector<double> Camera, 
-        std::vector<double> viewportCoordinates, 
+    VEC::VECTOR2D IntersectRaySphere(
+        VEC::VECTOR3D Camera, 
+        VEC::VECTOR3D viewportCoordinates, 
         shapes::SPHERE sphere
         );
 
@@ -29,13 +29,15 @@ namespace viewport{
         Traces a ray from Camera to an object from the object list
         Object list currently uses Spheres but will Change
     */
-    std::tuple<int, int, int> TraceRay(
-        std::vector<double> Camera, 
-        std::vector<double> viewportCoordinates, 
+   VEC::VECTOR3Di TraceRay(
+        VEC::VECTOR3D Camera, 
+        VEC::VECTOR3D viewportCoordinates, 
         int t_min, 
         int t_max,  
         shapes::SPHERE objectList[],
-        int listSize
+        int objlistSize,
+        shader::Light lightList[],
+        int lightlistSize
         );
 }
 
