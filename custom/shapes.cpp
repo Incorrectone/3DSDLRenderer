@@ -2,9 +2,9 @@
 
 #include "include/vectors.h"
 
-shapes::SPHERE shapes::initSphere(VEC::VECTOR3D center, double radius, VEC::VECTOR3Di color){
+shapes::SPHERE shapes::initSphere(VEC::VECTOR3D center, double radius, VEC::VECTOR3Di color, int specular){
     
-    shapes::SPHERE sphereOBJ = {center, radius, color, 1};
+    shapes::SPHERE sphereOBJ = {center, radius, color, 1, specular};
     return sphereOBJ;
 
 }

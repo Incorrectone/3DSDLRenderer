@@ -53,13 +53,13 @@ int main(void){
 	int numberofObjects = 4;
 	shapes::SPHERE objList[numberofObjects];
 
-	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, {255, 0, 0});
+	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, {255, 0, 0}, 500);
 
-	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, {0, 0, 255});
+	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, {0, 0, 255}, 500);
 
-	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, {0, 255, 0});
+	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, {0, 255, 0}, 10);
 
-	objList[3] = shapes::initSphere({0.0, -5001.0, 0.0}, 5000, {255, 255, 0});
+	objList[3] = shapes::initSphere({0.0, -5001.0, 0.0}, 5000, {255, 255, 0}, 1000);
 	
 	int numberofLights = 3;
 	shader::Light lightList[numberofLights];

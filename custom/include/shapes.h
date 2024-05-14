@@ -7,18 +7,20 @@
 
 namespace shapes{
     // A simple sphere
-    typedef struct SPHERE_S {
+    struct SPHERE{
         VEC::VECTOR3D center;
         double radius;
         VEC::VECTOR3Di color;
         int valid;
-    } SPHERE;
+        int specular;
+    };
 
     // Initilizes a sphere, with valid key = 1
     SPHERE initSphere(
         VEC::VECTOR3D center,
         double radius,
-        VEC::VECTOR3Di color
+        VEC::VECTOR3Di color,
+        int specular = -1
     );
 }
 
