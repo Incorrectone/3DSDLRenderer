@@ -6,7 +6,6 @@
 
 #include <limits>
 #include <cmath>
-#include <iostream>
 
 VEC::VECTOR3D viewport::CanvasToViewport(int canvasX, int canvasY){
     VEC::VECTOR3D viewportCoordinates;
@@ -47,6 +46,7 @@ VEC::VECTOR3Di viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCo
     
     shapes::SPHERE closest_sphere;
     closest_sphere.valid = 0;
+    closest_sphere.specular = -1;
 
     for(int i = 0; i < objlistSize; i++){
         
@@ -70,5 +70,5 @@ VEC::VECTOR3Di viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCo
     VEC::VECTOR3D Normal = vectormath::subtractVectors(pointofIntersection, closest_sphere.center);
     Normal = vectormath::mscalarVector(1 / vectormath::absoluteValue(Normal), Normal);
      
-    return vectormath::mscalarVector(shader::ComputeLighting(pointofIntersection, Normal, lightList, lightlistSize), closest_sphere.color);;
+    return vectormath::mscalarVector(shader::ComputeLighting(pointofIntersection, Normal, vectormath::mscalarVector(-1.0, viewportCoordinates), closest_sphere.specular, lightList, lightlistSize), closest_sphere.color, 1);;
 }
