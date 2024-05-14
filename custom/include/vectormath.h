@@ -23,7 +23,8 @@ namespace vectormath{
 
     VEC::VECTOR3Di mscalarVector(
         double scalar, 
-        VEC::VECTOR3Di vector
+        VEC::VECTOR3Di vector,
+        int isColor = 0
     );
 
     double vectorDotProduct(

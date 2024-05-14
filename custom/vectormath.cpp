@@ -41,12 +41,23 @@ VEC::VECTOR3D vectormath::mscalarVector(double scalar, VEC::VECTOR3D vector){
     return scaled_vector;
 }
 
-VEC::VECTOR3Di vectormath::mscalarVector(double scalar, VEC::VECTOR3Di vector){
+VEC::VECTOR3Di vectormath::mscalarVector(double scalar, VEC::VECTOR3Di vector, int isColor){
     VEC::VECTOR3Di scaled_vector;
 
     scaled_vector.x = vector.x * scalar;
     scaled_vector.y = vector.y * scalar;
     scaled_vector.z = vector.z * scalar;
+    if(isColor == 1){
+        if(scaled_vector.x > 255){
+            scaled_vector.x = 255;
+        }
+        if(scaled_vector.y > 255){
+            scaled_vector.y = 255;
+        }
+        if(scaled_vector.z > 255){
+            scaled_vector.z = 255;
+        }
+    }
 
     return scaled_vector;
 }
