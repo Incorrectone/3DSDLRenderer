@@ -1,8 +1,11 @@
 //Structs and Constants
 #include "custom/include/constants.h"
 #include "custom/include/shapes.h"
+#include "custom/include/vectors.h"
 
 // Functions
+#include "custom/include/shader.h"
+#include "custom/include/vectormath.h"
 #include "custom/include/viewport.h"
 #include "custom/include/putPixel.h"
 
@@ -11,11 +14,15 @@
 
 // Standard Library
 #include <iostream>
-#include <tuple>
-#include <vector>
+
+// For Mesuring Rendering Time
+#include <chrono>
 
 int main(void){
-	std::vector<double> viewportCamera({0 ,0 ,0});
+
+    auto start = std::chrono::high_resolution_clock::now();
+
+	VEC::VECTOR3D viewportCamera({0 ,0 ,0});
 
 	SDL_Event event; // Basic Event Union
 	SDL_Window* window = NULL; // The Window we will be rendering to
@@ -43,36 +50,49 @@ int main(void){
 	// Create the Surface to which we will draw
 	screenSurface = SDL_GetWindowSurface(window);
 	
-	int numberofObjects = 3;
+	int numberofObjects = 4;
 	shapes::SPHERE objList[numberofObjects];
 
-	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, std::make_tuple(255, 0, 0));
+	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, {255, 0, 0});
 
-	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, std::make_tuple(0, 0, 255));
+	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, {0, 0, 255});
 
-	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, std::make_tuple(0, 255, 0));
+	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, {0, 255, 0});
+
+	objList[3] = shapes::initSphere({0.0, -5001.0, 0.0}, 5000, {255, 255, 0});
+	
+	int numberofLights = 3;
+	shader::Light lightList[numberofLights];
+
+	lightList[0] = shader::initLight('a', 0.2, {0 ,0 ,0}, {255, 0, 0});
+
+	lightList[1] = shader::initLight('p', 0.6, {2 ,1 ,0}, {255, 0, 0});
+
+	lightList[2] = shader::initLight('d', 0.2, {1 ,4 ,4}, {255, 0, 0});
+
 
 	SDL_LockSurface( screenSurface );
 
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-			std::vector<double> viewportCoordinates = viewport::CanvasToViewport(x, y);
-			std::tuple<int, int, int> color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, 100000000, objList, numberofObjects);
-			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, std::get<0>(color), std::get<1>(color), std::get<2>(color)));
+			VEC::VECTOR3D viewportCoordinates = viewport::CanvasToViewport(x, y);
+			VEC::VECTOR3Di color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, 100000000, objList, numberofObjects, lightList, numberofLights);
+			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}
 	}
 
-	putPixel(screenSurface, 0, 0, SDL_MapRGB(screenSurface->format, 0x00, 0x00, 0x00));
 	SDL_UnlockSurface( screenSurface );
 	SDL_UpdateWindowSurface(window);
 
-	std::cout << "DONE\n";
+	auto stop = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+	std::cout << "Time Taken to Render: " << duration.count() / (double)1000000 << " s\n";
 	// Game Loop
 	while(1){
         if(SDL_PollEvent(&event) && event.type == SDL_QUIT){
             break;
 		}
-    }
+	}
 
 	return 0;
 }
