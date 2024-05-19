@@ -53,13 +53,13 @@ int main(void){
 	int numberofObjects = 4;
 	shapes::SPHERE objList[numberofObjects];
 
-	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, {255, 0, 0}, 500);
+	objList[0] = shapes::initSphere({0.0, -1.0, 3.0}, 1, {255, 0, 0}, 500, 0.2);
 
-	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, {0, 0, 255}, 500);
+	objList[1] = shapes::initSphere({2.0, 0.0, 4.0}, 1, {0, 0, 255}, 500, 0.3);
 
-	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, {0, 255, 0}, 10);
+	objList[2] = shapes::initSphere({-2.0, 0.0, 4.0}, 1, {0, 255, 0}, 10, 0.4);
 
-	objList[3] = shapes::initSphere({0.0, -5001.0, 0.0}, 5000, {255, 255, 0}, 1000);
+	objList[3] = shapes::initSphere({0.0, -5001.0, 0.0}, 5000, {255, 255, 0}, 1000, 0.5);
 	
 	int numberofLights = 3;
 	shader::Light lightList[numberofLights];
@@ -76,7 +76,7 @@ int main(void){
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
 			VEC::VECTOR3D viewportCoordinates = viewport::CanvasToViewport(x, y);
-			VEC::VECTOR3Di color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, 100000000, objList, numberofObjects, lightList, numberofLights);
+			VEC::VECTOR3Di color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, 100000000, objList, numberofObjects, lightList, numberofLights, constants::RECURSION_DEPTH);
 			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}
 	}
