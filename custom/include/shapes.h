@@ -11,8 +11,10 @@ namespace shapes{
         VEC::VECTOR3D center;
         double radius;
         VEC::VECTOR3Di color;
-        int valid;
         int specular;
+        double reflective;
+        char type;
+        int valid;
     };
 
     // Initilizes a sphere, with valid key = 1
@@ -20,7 +22,31 @@ namespace shapes{
         VEC::VECTOR3D center,
         double radius,
         VEC::VECTOR3Di color,
-        int specular = -1
+        int specular = -1,
+        double reflective = 0.5
+    );
+
+    struct returnType{
+        SPHERE object;
+        double closest_intersection;
+    };
+
+    struct PLANE{
+        VEC::VECTOR3D Normal;
+        double rh;
+        VEC::VECTOR3Di color;
+        int specular;
+        double reflective;
+        char type;
+        int valid;
+    };
+    
+    PLANE initPlane(
+        VEC::VECTOR3D Normal,
+        double d,
+        VEC::VECTOR3Di color,
+        int specular = -1,
+        double reflective = 0.5
     );
 }
 

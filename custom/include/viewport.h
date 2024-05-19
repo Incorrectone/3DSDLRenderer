@@ -24,6 +24,15 @@ namespace viewport{
         VEC::VECTOR3D viewportCoordinates, 
         shapes::SPHERE sphere
         );
+    
+    shapes::returnType ClosestIntersection(
+        VEC::VECTOR3D Camera, 
+        VEC::VECTOR3D viewportCoordinates, 
+        double t_min, 
+        double t_max,  
+        shapes::SPHERE objectList[],
+        int objlistSize
+    );
 
     /*
         Traces a ray from Camera to an object from the object list
@@ -32,12 +41,13 @@ namespace viewport{
    VEC::VECTOR3Di TraceRay(
         VEC::VECTOR3D Camera, 
         VEC::VECTOR3D viewportCoordinates, 
-        int t_min, 
-        int t_max,  
+        double t_min, 
+        double t_max,  
         shapes::SPHERE objectList[],
         int objlistSize,
         shader::Light lightList[],
-        int lightlistSize
+        int lightlistSize,
+        int reflection_recursive
         );
 }
 
