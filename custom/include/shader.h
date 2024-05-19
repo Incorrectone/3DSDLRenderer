@@ -4,6 +4,7 @@
 #define SHADER_H
 
 #include "vectors.h"
+#include "shapes.h"
 
 namespace shader{
     struct Light{
@@ -27,7 +28,9 @@ namespace shader{
         VEC::VECTOR3D directiontoViewport,
         int specular,
         Light lightList[],
-        int numberofLights
+        int numberofLights,
+        shapes::SPHERE objectList[],
+        int numberofObjects
     );
 }
 
