@@ -38,7 +38,7 @@ namespace viewport{
         Traces a ray from Camera to an object from the object list
         Object list currently uses Spheres but will Change
     */
-   VEC::VECTOR3Di TraceRay(
+   VEC::VECTOR3D TraceRay(
         VEC::VECTOR3D Camera, 
         VEC::VECTOR3D viewportCoordinates, 
         double t_min, 

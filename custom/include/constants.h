@@ -8,7 +8,7 @@
 namespace constants
 {
 	const VEC::VECTOR3D ORIGIN({0 ,0 ,0});
-    const VEC::VECTOR3Di BACKGROUND_COLOR({0, 0, 0});
+    const VEC::VECTOR3D BACKGROUND_COLOR({0, 0, 0});
 
     const int RECURSION_DEPTH { 3 };
 
@@ -18,8 +18,8 @@ namespace constants
     constexpr int FIELDOFVIEW { 53 }; // in Degrees
 
 
-    constexpr int SCREEN_WIDTH { 600 };
-    constexpr int SCREEN_HEIGHT { 600 };
+    constexpr int SCREEN_WIDTH { 1600 };
+    constexpr int SCREEN_HEIGHT { 1600 };
 
 }
 #endif

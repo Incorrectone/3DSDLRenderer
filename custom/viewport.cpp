@@ -60,19 +60,16 @@ shapes::returnType viewport::ClosestIntersection(VEC::VECTOR3D Camera, VEC::VECT
             closest_sphere = objectList[i];
         }
     }
-    // ClosestIntersection Function End
 
     return {closest_sphere, closest_intersection};
 }
 
-VEC::VECTOR3Di viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCoordinates, double t_min, double t_max, shapes::SPHERE objectList[], int objlistSize, shader::Light lightList[], int lightlistSize, int reflection_recursive){
+VEC::VECTOR3D viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCoordinates, double t_min, double t_max, shapes::SPHERE objectList[], int objlistSize, shader::Light lightList[], int lightlistSize, int reflection_recursive){
     
     shapes::returnType temp = ClosestIntersection(Camera, viewportCoordinates, t_min, t_max, objectList, objlistSize);
     
-    // ClosestIntersection Function Start
     shapes::SPHERE closest_sphere = temp.object;
     double closest_intersection = temp.closest_intersection;
-    // ClosestIntersection Function End
 
     if(closest_sphere.valid == 0){
         return constants::BACKGROUND_COLOR;
@@ -82,7 +79,7 @@ VEC::VECTOR3Di viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCo
     VEC::VECTOR3D Normal = vectormath::subtractVectors(pointofIntersection, closest_sphere.center);
     Normal = vectormath::mscalarVector(1 / vectormath::absoluteValue(Normal), Normal);
      
-    VEC::VECTOR3Di local_color = vectormath::mscalarVector(shader::ComputeLighting(pointofIntersection, Normal, vectormath::mscalarVector(-1.0, viewportCoordinates), closest_sphere.specular, lightList, lightlistSize, objectList, objlistSize), closest_sphere.color, 1);;
+    VEC::VECTOR3D local_color = vectormath::mscalarVector(shader::ComputeLighting(pointofIntersection, Normal, vectormath::mscalarVector(-1.0, viewportCoordinates), closest_sphere.specular, lightList, lightlistSize, objectList, objlistSize), closest_sphere.color, 1);;
 
     double reflective = closest_sphere.reflective;
     if ((reflection_recursive <= 0) || (reflective <= 0)){
@@ -90,7 +87,7 @@ VEC::VECTOR3Di viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCo
     }
 
     VEC::VECTOR3D Reflected_ray = vectormath::ReflectedRay(Normal, vectormath::mscalarVector(-1.0, viewportCoordinates));
-    VEC::VECTOR3Di reflective_color = viewport::TraceRay(pointofIntersection, Reflected_ray, 0.1, std::numeric_limits<double>::max(), objectList, objlistSize, lightList, lightlistSize, reflection_recursive - 1);
+    VEC::VECTOR3D reflective_color = viewport::TraceRay(pointofIntersection, Reflected_ray, 0.001, t_max, objectList, objlistSize, lightList, lightlistSize, reflection_recursive - 1);
 
     return vectormath::addVectors(vectormath::mscalarVector(1 - reflective, local_color, 1), vectormath::mscalarVector(reflective, reflective_color, 1), 1);
 }

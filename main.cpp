@@ -76,7 +76,7 @@ int main(void){
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
 			VEC::VECTOR3D viewportCoordinates = viewport::CanvasToViewport(x, y);
-			VEC::VECTOR3Di color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, 100000000, objList, numberofObjects, lightList, numberofLights, constants::RECURSION_DEPTH);
+			VEC::VECTOR3D color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), objList, numberofObjects, lightList, numberofLights, constants::RECURSION_DEPTH);
 			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}
 	}

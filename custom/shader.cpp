@@ -1,11 +1,11 @@
 #include "include/vectors.h"
-#include "include/shader.h"
 #include "include/vectormath.h"
+#include "include/shader.h"
 #include "include/viewport.h"
 
 #include <cmath>
 
-shader::Light shader::initLight(char type, double intensity,VEC::VECTOR3D direction, VEC::VECTOR3Di color){
+shader::Light shader::initLight(char type, double intensity,VEC::VECTOR3D direction, VEC::VECTOR3D color){
     shader::Light lightOBJ = {type, intensity, direction, color, 1};
     return lightOBJ;
 }
@@ -20,7 +20,7 @@ double shader::ComputeLighting(VEC::VECTOR3D Point, VEC::VECTOR3D Normal, VEC::V
             VEC::VECTOR3D vectortoLight({0, 0, 0});
             if(lightList[i].type == 'p'){
                 vectortoLight = vectormath::subtractVectors(lightList[i].direction, Point);
-            } else if(lightList[i].type == 'a'){
+            } else if(lightList[i].type == 'a'){ 
                 vectortoLight = lightList[i].direction;
             }
 

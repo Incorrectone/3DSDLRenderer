@@ -62,5 +62,6 @@
         "span": "cpp",
         "variant": "cpp"
     },
-    "cmake.configureOnOpen": true
+    "cmake.configureOnOpen": true,
+    "cmake.sourceDirectory": "/wsl$/Ubuntu/home/incorwsl/Projects/3DSDLRenderer"
 }

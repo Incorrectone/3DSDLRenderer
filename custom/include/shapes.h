@@ -10,7 +10,7 @@ namespace shapes{
     struct SPHERE{
         VEC::VECTOR3D center;
         double radius;
-        VEC::VECTOR3Di color;
+        VEC::VECTOR3D color;
         int specular;
         double reflective;
         char type;
@@ -21,20 +21,15 @@ namespace shapes{
     SPHERE initSphere(
         VEC::VECTOR3D center,
         double radius,
-        VEC::VECTOR3Di color,
+        VEC::VECTOR3D color,
         int specular = -1,
         double reflective = 0.5
     );
 
-    struct returnType{
-        SPHERE object;
-        double closest_intersection;
-    };
-
     struct PLANE{
         VEC::VECTOR3D Normal;
         double rh;
-        VEC::VECTOR3Di color;
+        VEC::VECTOR3D color;
         int specular;
         double reflective;
         char type;
@@ -44,10 +39,15 @@ namespace shapes{
     PLANE initPlane(
         VEC::VECTOR3D Normal,
         double d,
-        VEC::VECTOR3Di color,
+        VEC::VECTOR3D color,
         int specular = -1,
         double reflective = 0.5
     );
+
+    struct returnType{
+        SPHERE object;
+        double closest_intersection;
+    };
 }
 
 #endif

@@ -14,12 +14,6 @@ namespace VEC{
         double x;
         double y;
     };
-
-    struct VECTOR3Di{
-        int x;
-        int y;
-        int z;
-    };
 } 
 
 #endif
