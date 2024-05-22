@@ -7,8 +7,8 @@
 
 namespace constants
 {
-	const VEC::VECTOR3D ORIGIN({0 ,0 ,0});
-    const VEC::VECTOR3D BACKGROUND_COLOR({0, 0, 0});
+	const Vector3D ORIGIN {0 ,0 ,0};
+    const Vector3D BACKGROUND_COLOR {135, 206, 235};
 
     const int RECURSION_DEPTH { 3 };
 

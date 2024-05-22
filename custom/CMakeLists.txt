@@ -5,8 +5,7 @@ project(custom)
 add_library(${PROJECT_NAME} 
             include/constants.h
             include/vectors.h 
-            shapes.cpp include/shapes.h
-            vectormath.cpp include/vectormath.h
+            include/shapes.h
             shader.cpp include/shader.h
             putPixel.cpp include/putPixel.h 
             viewport.cpp include/viewport.h

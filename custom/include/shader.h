@@ -5,33 +5,26 @@
 
 #include "vectors.h"
 #include "shapes.h"
+    
+struct Light{
+    char type;
+    double intensity;
+    Vector3D<double> direction;
+    Vector3D<int> color;
+    int valid;
 
-namespace shader{
-    struct Light{
-        char type;
-        double intensity;
-        VEC::VECTOR3D direction;
-        VEC::VECTOR3D color;
-        int valid;
-    };
+Light(char TYPE, double INTENSITY ,Vector3D<double> DIRECTION, Vector3D<double> COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
+};
 
-    Light initLight(
-        char type, 
-        double intensity,   
-        VEC::VECTOR3D direction,
-        VEC::VECTOR3D color
-    );
-
-    double ComputeLighting(
-        VEC::VECTOR3D Point,
-        VEC::VECTOR3D Normal,
-        VEC::VECTOR3D directiontoViewport,
-        int specular,
-        Light lightList[],
-        int numberofLights,
-        shapes::SPHERE objectList[],
-        int numberofObjects
-    );
-}
+double ComputeLighting(
+    Vector3D<double> Point,
+    Vector3D<double> Normal,
+    Vector3D<double> directiontoViewport,
+    int specular,
+    Light lightList[],
+    int numberofLights,
+    Object objectList[],
+    int numberofObjects
+);
 
 #endif

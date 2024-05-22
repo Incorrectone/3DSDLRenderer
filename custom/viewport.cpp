@@ -1,5 +1,4 @@
 #include "include/constants.h"
-#include "include/vectormath.h"
 #include "include/shapes.h"
 #include "include/viewport.h"
 #include "include/shader.h"
@@ -7,8 +6,12 @@
 #include <limits>
 #include <cmath>
 
-VEC::VECTOR3D viewport::CanvasToViewport(int canvasX, int canvasY){
-    VEC::VECTOR3D viewportCoordinates;
+Vector3D<double> viewport::ReflectedRay(Vector3D<double> Normal, Vector3D<double> raytobeReflected){
+    return 2 * Normal * Normal.dot(raytobeReflected) - raytobeReflected;
+}
+
+Vector3D<double> viewport::CanvasToViewport(int canvasX, int canvasY){
+    Vector3D<double> viewportCoordinates;
 
     // Pg. 16
     viewportCoordinates.x = canvasX * constants::VEIWPORT_WIDTH / (double)constants::SCREEN_WIDTH;
@@ -18,15 +21,15 @@ VEC::VECTOR3D viewport::CanvasToViewport(int canvasX, int canvasY){
     return viewportCoordinates;
 }
 
-VEC::VECTOR2D viewport::IntersectRaySphere(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCoordinates, shapes::SPHERE sphere){
+Vector2D viewport::IntersectRaySphere(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Sphere sphere){
     
     double radius = sphere.radius;
     
-    VEC::VECTOR3D CameraToSphere = vectormath::subtractVectors(Camera, sphere.center);
+    Vector3D<double> CameraToSphere = Camera - sphere.center;
     
-    double a = vectormath::vectorDotProduct(viewportCoordinates, viewportCoordinates);
-    double b = vectormath::vectorDotProduct(CameraToSphere, viewportCoordinates) * 2.0;
-    double c = vectormath::vectorDotProduct(CameraToSphere, CameraToSphere) - (radius * radius);
+    double a = viewportCoordinates.dot(viewportCoordinates);
+    double b = CameraToSphere.dot(viewportCoordinates) * 2.0;
+    double c = CameraToSphere.dot(CameraToSphere) - (radius * radius);
 
     double discriminant = b * b - 4 * a * c;
 
@@ -40,54 +43,81 @@ VEC::VECTOR2D viewport::IntersectRaySphere(VEC::VECTOR3D Camera, VEC::VECTOR3D v
     return {t1, t2};
 }
 
-shapes::returnType viewport::ClosestIntersection(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCoordinates, double t_min, double t_max, shapes::SPHERE objectList[], int objlistSize){
+Vector2D viewport::IntersectRayPlane(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Plane plane){
     
-    double closest_intersection =  std::numeric_limits<double>::max();
-    shapes::SPHERE closest_sphere;
-    closest_sphere.valid = 0;
-    closest_sphere.specular = -1;
+    double check = plane.normal.dot(-1 * viewportCoordinates);
+
+    if (check == 0.0){
+        return {std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
+    }
+
+    double t1 = (plane.rh - plane.normal.dot(Camera)) * ( 1 / plane.normal.dot(viewportCoordinates) );
+    
+    double t2 = t1;
+
+    return {t1, t2};
+}
+
+Vector2D viewport::IntersectRay(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Object object){
+    if(object.type == 's')
+        return IntersectRaySphere(Camera, viewportCoordinates, object.object.sphere);
+    else if(object.type == 'p')
+        return IntersectRayPlane(Camera, viewportCoordinates, object.object.plane);    
+}
+
+
+returnType viewport::ClosestIntersection(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, double t_min, double t_max, Object objectList[], int objlistSize){
+    
+    double closest_intersection = std::numeric_limits<double>::max();
+    Object closest_object;
 
     for(int i = 0; i < objlistSize; i++){
+        auto [t1, t2] = viewport::IntersectRay(Camera, viewportCoordinates, objectList[i]);
         
-        auto [t1, t2] = viewport::IntersectRaySphere(Camera, viewportCoordinates, objectList[i]);
         
         if( (t1 <= t_max && t1 >= t_min) && t1 < closest_intersection){
             closest_intersection = t1;
-            closest_sphere = objectList[i];
+            closest_object = objectList[i];
         }
         if( (t2 <= t_max && t2 >= t_min) && t2 < closest_intersection){
             closest_intersection = t2;
-            closest_sphere = objectList[i];
+            closest_object = objectList[i];
         }
     }
 
-    return {closest_sphere, closest_intersection};
+    return {closest_object, closest_intersection};
 }
 
-VEC::VECTOR3D viewport::TraceRay(VEC::VECTOR3D Camera, VEC::VECTOR3D viewportCoordinates, double t_min, double t_max, shapes::SPHERE objectList[], int objlistSize, shader::Light lightList[], int lightlistSize, int reflection_recursive){
+Vector3D<double> viewport::TraceRay(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, double t_min, double t_max, Object objectList[], int objlistSize, Light lightList[], int lightlistSize, int reflection_recursive){
     
-    shapes::returnType temp = ClosestIntersection(Camera, viewportCoordinates, t_min, t_max, objectList, objlistSize);
-    
-    shapes::SPHERE closest_sphere = temp.object;
+    returnType temp = ClosestIntersection(Camera, viewportCoordinates, t_min, t_max, objectList, objlistSize);
+    Object closest_object = temp.returnedObj;
     double closest_intersection = temp.closest_intersection;
 
-    if(closest_sphere.valid == 0){
+    if(closest_object.valid == -1){
         return constants::BACKGROUND_COLOR;
     }
 
-    VEC::VECTOR3D pointofIntersection = vectormath::addVectors(Camera, vectormath::mscalarVector(closest_intersection, viewportCoordinates));
-    VEC::VECTOR3D Normal = vectormath::subtractVectors(pointofIntersection, closest_sphere.center);
-    Normal = vectormath::mscalarVector(1 / vectormath::absoluteValue(Normal), Normal);
-     
-    VEC::VECTOR3D local_color = vectormath::mscalarVector(shader::ComputeLighting(pointofIntersection, Normal, vectormath::mscalarVector(-1.0, viewportCoordinates), closest_sphere.specular, lightList, lightlistSize, objectList, objlistSize), closest_sphere.color, 1);;
+    Vector3D<double> Normal;
 
-    double reflective = closest_sphere.reflective;
+    Vector3D<double> pointofIntersection = Camera + closest_intersection * viewportCoordinates;
+    if(closest_object.type == 's'){
+        Normal = pointofIntersection - closest_object.object.sphere.center;
+        Normal = (1 / Normal.modulus()) * Normal;
+    }else if(closest_object.type == 'p'){
+        Normal = closest_object.object.plane.normal;
+        Normal = (1 / Normal.modulus()) * Normal;
+    }
+     
+    Vector3D<double> local_color = ComputeLighting(pointofIntersection, Normal, -1.0 * viewportCoordinates, closest_object.specular, lightList, lightlistSize, objectList, objlistSize) * closest_object.color;
+
+    double reflective = closest_object.reflective;
     if ((reflection_recursive <= 0) || (reflective <= 0)){
-        return local_color;
+        return local_color.colorFit();
     }
 
-    VEC::VECTOR3D Reflected_ray = vectormath::ReflectedRay(Normal, vectormath::mscalarVector(-1.0, viewportCoordinates));
-    VEC::VECTOR3D reflective_color = viewport::TraceRay(pointofIntersection, Reflected_ray, 0.001, t_max, objectList, objlistSize, lightList, lightlistSize, reflection_recursive - 1);
+    Vector3D<double> Reflected_ray = viewport::ReflectedRay(Normal, -1.0 * viewportCoordinates);
+    Vector3D<double> reflective_color = viewport::TraceRay(pointofIntersection, Reflected_ray, 0.001, t_max, objectList, objlistSize, lightList, lightlistSize, reflection_recursive - 1);
 
-    return vectormath::addVectors(vectormath::mscalarVector(1 - reflective, local_color, 1), vectormath::mscalarVector(reflective, reflective_color, 1), 1);
+    return (((1 - reflective) * local_color) + (reflective * reflective_color)).colorFit();
 }

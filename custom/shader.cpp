@@ -1,50 +1,50 @@
 #include "include/vectors.h"
-#include "include/vectormath.h"
 #include "include/shader.h"
 #include "include/viewport.h"
 
 #include <cmath>
 
-shader::Light shader::initLight(char type, double intensity,VEC::VECTOR3D direction, VEC::VECTOR3D color){
-    shader::Light lightOBJ = {type, intensity, direction, color, 1};
-    return lightOBJ;
-}
-
-double shader::ComputeLighting(VEC::VECTOR3D Point, VEC::VECTOR3D Normal, VEC::VECTOR3D directiontoViewport, int specular, Light lightList[], int numberofLights, shapes::SPHERE objectList[], int numberofObjects){
+double ComputeLighting(Vector3D<double> Point, Vector3D<double> Normal, Vector3D<double> directiontoViewport, int specular, Light lightList[], int numberofLights, Object objectList[], int numberofObjects){
+    
     double intensity = 0.0;
+    
     for(int i = 0; i < numberofLights; i++){
         if(lightList[i].type == 'a'){
+
             intensity += lightList[i].intensity;
+
         } else {
 
-            VEC::VECTOR3D vectortoLight({0, 0, 0});
+            Vector3D<double> vectortoLight;
+
             if(lightList[i].type == 'p'){
-                vectortoLight = vectormath::subtractVectors(lightList[i].direction, Point);
+                //
+                vectortoLight = lightList[i].direction - Point;
             } else if(lightList[i].type == 'a'){ 
+                //
                 vectortoLight = lightList[i].direction;
             }
 
             // Shadows
-            shapes::returnType temp = viewport::ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max(), objectList, numberofObjects);
-            if(temp.object.valid != 0){
-                continue; // COntinue the Loop not the fvking code
-            }
+            returnType temp = viewport::ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max(), objectList, numberofObjects);
+            if(temp.returnedObj.valid != -1)
+                continue;
             // Diffuse
 
-            double dotproductNnL = vectormath::vectorDotProduct(vectortoLight, Normal);
+            double dotproductNnL = vectortoLight.dot(Normal);
             if(dotproductNnL > 0){
-                intensity += lightList[i].intensity * dotproductNnL/(vectormath::absoluteValue(Normal) * vectormath::absoluteValue(vectortoLight));
+                intensity += lightList[i].intensity * dotproductNnL/(Normal.modulus() * vectortoLight.modulus());
             }
 
             //Specular
 
             if(specular != -1){
 
-                VEC::VECTOR3D reflectionofvectortoLight = vectormath::ReflectedRay(Normal, vectortoLight);
+                Vector3D<double> reflectionofvectortoLight = viewport::ReflectedRay(Normal, vectortoLight);
               
-                double dotproductRnD = vectormath::vectorDotProduct(reflectionofvectortoLight, directiontoViewport);
+                double dotproductRnD = reflectionofvectortoLight.dot(directiontoViewport);
                 if(dotproductRnD > 0){
-                    intensity += lightList[i].intensity * pow(dotproductRnD/(vectormath::absoluteValue(directiontoViewport) * vectormath::absoluteValue(reflectionofvectortoLight)), specular);
+                    intensity += lightList[i].intensity * pow(dotproductRnD/(directiontoViewport.modulus() * reflectionofvectortoLight.modulus()), specular);
                     
                 } 
             }
