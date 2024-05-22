@@ -4,50 +4,69 @@
 #define SHAPES_H
 
 #include "vectors.h"
+#include <iostream>
 
-namespace shapes{
-    // A simple sphere
-    struct SPHERE{
-        VEC::VECTOR3D center;
-        double radius;
-        VEC::VECTOR3D color;
-        int specular;
-        double reflective;
-        char type;
-        int valid;
-    };
+struct type_ID{ // level 1 class
+    int uniqueID; // Unique ID Dunno how to implement
+    char type; // Type for primitive shapes 
+    int valid;
 
-    // Initilizes a sphere, with valid key = 1
-    SPHERE initSphere(
-        VEC::VECTOR3D center,
-        double radius,
-        VEC::VECTOR3D color,
-        int specular = -1,
-        double reflective = 0.5
-    );
+    type_ID(char TYPE = 'u', int ID = -1) : uniqueID{ID}, type{TYPE}, valid{-1} {}
+};
 
-    struct PLANE{
-        VEC::VECTOR3D Normal;
-        double rh;
-        VEC::VECTOR3D color;
-        int specular;
-        double reflective;
-        char type;
-        int valid;
-    };
+struct Shape{ // level 2 class 
+    Vector3D<int> color;
+    int specular;
+    double reflective;
+
+    Shape(Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) : color{COLOR}, specular{SPECULAR}, reflective{REFLECTION} {} // General Access Constructor
+};
+
+struct Sphere{
+    Vector3D<double> center;
+    double radius;
     
-    PLANE initPlane(
-        VEC::VECTOR3D Normal,
-        double d,
-        VEC::VECTOR3D color,
-        int specular = -1,
-        double reflective = 0.5
-    );
+    Sphere(Vector3D<double> CENTER, double RADIUS) : center{CENTER}, radius{RADIUS} {} 
+    Sphere() : center{0, 0, 0}, radius{1} {}
+};
 
-    struct returnType{
-        SPHERE object;
+struct Plane{
+    Vector3D<double> normal;
+    double rh;
+
+    Plane(Vector3D<double> NORMAL, double RIGHT) : normal{NORMAL}, rh{RIGHT} {} 
+    Plane() : normal{0, 0, 0}, rh{1} {}
+};
+
+
+union universalObj{
+    Plane plane;
+    Sphere sphere;
+    universalObj () {}
+};
+
+struct Object : type_ID, Shape{
+    universalObj object;
+
+    Object() : type_ID() {}
+
+    Object(Vector3D<double> vec, double r, char t, Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) {
+        type = t;
+        valid = 1;
+        color = COLOR;
+        specular = SPECULAR;
+        reflective = REFLECTION;
+        
+        if(type == 'p')
+            object.plane = {vec, r};
+        if(type == 's')
+            object.sphere = {vec, r};
+    }
+};
+
+struct returnType{
+        Object returnedObj;
         double closest_intersection;
-    };
-}
+};
 
 #endif
