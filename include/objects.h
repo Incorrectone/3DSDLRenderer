@@ -1,9 +1,10 @@
 #pragma once
 
-#ifndef SHAPES_H
-#define SHAPES_H
+#ifndef OBJECTS_H
+#define OBJECTS_H
 
 #include "vectors.h"
+
 #include <iostream>
 
 struct type_ID{ 
@@ -14,7 +15,7 @@ struct type_ID{
     type_ID(char TYPE = 'u', int ID = -1) : uniqueID{ID}, type{TYPE}, valid{-1} {}
 };
 
-struct Shape{ // level 2 class 
+struct Shape{  
     Vector3D<int> color;
     int specular;
     double reflective;
@@ -94,6 +95,17 @@ struct Object : type_ID, Shape{
 struct returnType{
         Object returnedObj;
         double closest_intersection;
+};
+
+struct Light{
+    char type;
+    double intensity;
+    Vector3D<double> direction;
+    Vector3D<int> color;
+    int valid;
+
+    Light () {};
+    Light(char TYPE, double INTENSITY ,Vector3D<double> DIRECTION, Vector3D<double> COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
 };
 
 #endif

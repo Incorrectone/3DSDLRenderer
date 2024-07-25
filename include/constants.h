@@ -4,6 +4,7 @@
 #define CONSTANTS_H
 
 #include "vectors.h"
+#include "objects.h"
 
 namespace constants
 {
@@ -21,5 +22,10 @@ namespace constants
     constexpr int SCREEN_WIDTH { 1600 };
     constexpr int SCREEN_HEIGHT { 1600 };
 
+    const int numberofObjects = 4;
+	extern Object objList[numberofObjects];
+    
+	const int numberofLights = 3;
+	extern Light lightList[numberofLights];
 }
 #endif

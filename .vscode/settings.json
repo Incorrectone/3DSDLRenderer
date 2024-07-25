@@ -60,7 +60,8 @@
         "format": "cpp",
         "iomanip": "cpp",
         "span": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "ranges": "cpp"
     },
     "cmake.configureOnOpen": true,
     "cmake.sourceDirectory": "/wsl$/Ubuntu/home/incorwsl/Projects/3DSDLRenderer"

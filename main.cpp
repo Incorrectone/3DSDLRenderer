@@ -1,7 +1,7 @@
-//Structs and Constants
+// Structs and Constants
 #include "vectors.h"
+#include "objects.h"
 #include "constants.h"
-#include "shapes.h"
 
 // Functions
 #include "shader.h"
@@ -17,7 +17,21 @@
 // For Mesuring Rendering Time
 #include <chrono>
 
+namespace constants {
+	Object objList[numberofObjects];
+	Light lightList[numberofLights];
+}
+
 int main(void){
+
+    constants::objList[0] = Object({0, -1, 3}, 1, 's', {255, 0, 0}, 500, 0.2);
+    constants::objList[1] = Object({2, 0.0, 4.0}, 1, 's', {0, 0, 255}, 500, 0.3);
+    constants::objList[2] = Object({-2, 0, 4}, 1, 's', {0, 255, 0}, 10, 0.4);
+    constants::objList[3] = Object({0, -5001, 0}, 5000, 's', {255, 255, 0}, 1000, 0.5);
+
+    constants::lightList[0] = Light('a', 0.2, {0 ,0 ,0}, {255, 0, 0});
+    constants::lightList[1] = Light('p', 0.6, {2 ,1 ,0}, {255, 0, 0});
+    constants::lightList[2] = Light('d', 0.2, {1, 4, 4}, {255, 0, 0});
 
     auto start = std::chrono::high_resolution_clock::now();
 
@@ -48,33 +62,13 @@ int main(void){
 
 	// Create the Surface to which we will draw
 	screenSurface = SDL_GetWindowSurface(window);
-	
-	const int numberofObjects = 4;
-	Object objList[numberofObjects];
-
-	objList[0] = Object({0, -1, 3}, 1, 's', {255, 0, 0}, 500, 0.2);
-
-	objList[1] = Object({2, 0.0, 4.0}, 1, 's', {0, 0, 255}, 500, 0.3);
-
-	objList[2] = Object({-2, 0, 4}, 1, 's', {0, 255, 0}, 10, 0.4);
-	
-	objList[3] = Object({0, -5001, 0}, 5000, 's', {255, 255, 0}, 1000, 0.5);
-
-	const int numberofLights = 3;
-	Light * lightList = (Light *)malloc(sizeof(Light) * numberofLights);
-
-	lightList[0] = Light('a', 0.2, {0 ,0 ,0}, {255, 0, 0});
-
-	lightList[1] = Light('p', 0.6, {2 ,1 ,0}, {255, 0, 0});
-
-	lightList[2] = Light('d', 0.2, {1, 4, 4}, {255, 0, 0});
 
 	SDL_LockSurface( screenSurface );
 
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-			Vector3D<double> viewportCoordinates = viewport::CanvasToViewport(x, y);
-			Vector3D<int> color = viewport::TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), objList, numberofObjects, lightList, numberofLights, constants::RECURSION_DEPTH);
+			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y);
+			Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
 			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}
 	}
@@ -84,7 +78,9 @@ int main(void){
 
 	auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
 	std::cout << "Time Taken to Render: " << duration.count() / (double)1000000 << " s\n";
+
 	// Game Loop
 	while(1){
         if(SDL_PollEvent(&event) && event.type == SDL_QUIT){
