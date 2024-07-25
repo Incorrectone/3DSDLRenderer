@@ -1,6 +1,6 @@
-#include "include/vectors.h"
-#include "include/shader.h"
-#include "include/viewport.h"
+#include "vectors.h"
+#include "shader.h"
+#include "viewport.h"
 
 #include <cmath>
 

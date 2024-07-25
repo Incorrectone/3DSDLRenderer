@@ -1,6 +1,6 @@
-#include "include/putPixel.h"
-#include "include/constants.h"
-#include "../external/SDL2/include/SDL.h"
+#include "putPixel.h"
+#include "constants.h"
+#include "SDL.h"
 
 // Basic Pixel Changing function
 void putPixel(SDL_Surface* surface, int canvasX, int canvasY, Uint32 color){

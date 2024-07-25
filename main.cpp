@@ -1,15 +1,15 @@
 //Structs and Constants
-#include "custom/include/constants.h"
-#include "custom/include/shapes.h"
-#include "custom/include/vectors.h"
+#include "vectors.h"
+#include "constants.h"
+#include "shapes.h"
 
 // Functions
-#include "custom/include/shader.h"
-#include "custom/include/viewport.h"
-#include "custom/include/putPixel.h"
+#include "shader.h"
+#include "viewport.h"
+#include "putPixel.h"
 
 // External Library
-#include "external/SDL2/include/SDL.h"
+#include "SDL.h"
 
 // Standard Library
 #include <iostream>
@@ -49,24 +49,25 @@ int main(void){
 	// Create the Surface to which we will draw
 	screenSurface = SDL_GetWindowSurface(window);
 	
-	const int numberofObjects = 3;
+	const int numberofObjects = 4;
 	Object objList[numberofObjects];
 
-	objList[0] = Object({1.0, 0.0, 1.0}, 10, 'p', {192, 192, 192}, 500, 0.9);
+	objList[0] = Object({0, -1, 3}, 1, 's', {255, 0, 0}, 500, 0.2);
 
-	objList[1] = Object({1.0, 0.0, -1.0}, -10, 'p', {192, 192, 192}, 500, 0.9);
+	objList[1] = Object({2, 0.0, 4.0}, 1, 's', {0, 0, 255}, 500, 0.3);
 
-	objList[2] = Object({0.0, -1.0, 7.0}, 1, 's', {255, 0, 0}, 500, 0.3);
+	objList[2] = Object({-2, 0, 4}, 1, 's', {0, 255, 0}, 10, 0.4);
+	
+	objList[3] = Object({0, -5001, 0}, 5000, 's', {255, 255, 0}, 1000, 0.5);
 
 	const int numberofLights = 3;
 	Light * lightList = (Light *)malloc(sizeof(Light) * numberofLights);
 
-	lightList[0] = Light('a', 0.6, {0 ,0 ,0}, {255, 0, 0});
+	lightList[0] = Light('a', 0.2, {0 ,0 ,0}, {255, 0, 0});
 
 	lightList[1] = Light('p', 0.6, {2 ,1 ,0}, {255, 0, 0});
 
-	lightList[2] = Light('d', 0.2, {1 ,4 ,4}, {255, 0, 0});
-
+	lightList[2] = Light('d', 0.2, {1, 4, 4}, {255, 0, 0});
 
 	SDL_LockSurface( screenSurface );
 

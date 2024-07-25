@@ -13,7 +13,7 @@ struct Light{
     Vector3D<int> color;
     int valid;
 
-Light(char TYPE, double INTENSITY ,Vector3D<double> DIRECTION, Vector3D<double> COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
+    Light(char TYPE, double INTENSITY ,Vector3D<double> DIRECTION, Vector3D<double> COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
 };
 
 double ComputeLighting(

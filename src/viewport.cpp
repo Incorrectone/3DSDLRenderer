@@ -1,7 +1,7 @@
-#include "include/constants.h"
-#include "include/shapes.h"
-#include "include/viewport.h"
-#include "include/shader.h"
+#include "constants.h"
+#include "shapes.h"
+#include "viewport.h"
+#include "shader.h"
 
 #include <limits>
 #include <cmath>

@@ -3,7 +3,7 @@
 #ifndef putPixel_H
 #define putPixel_H
 
-#include "../../external/SDL2/include/SDL.h"
+#include "SDL.h"
 
 /*  
     Automatically Converts Canvas Coordinates into Screen Coordinates
