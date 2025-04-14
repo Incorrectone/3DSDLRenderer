@@ -4,6 +4,8 @@ This project is a basic C++ [SDL2][SDL] project that uses [CMake][] as a build s
 
 To build either run the shell scripts in the order configure -> build -> run, or just run all.sh once.
 
+This was made to learn about basics of Computer graphics, C++, CMake, and simple Bash scripting with the help of the book by ![Gabriel Gambetta](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
+
 ## Dependencies
 
 - [Git][]
@@ -34,7 +36,7 @@ sudo apt install libsdl2-image-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-mixer
 
 ```sh
 # Clone this repo
-git clone https://github.com/Incorrectone/SDLProject.git
+git clone https://github.com/Incorrectone/3DSDLRenderer.git
 cd SDLProject
 
 # Create a build folder
