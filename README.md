@@ -4,7 +4,7 @@ This project is a basic C++ [SDL2][SDL] project that uses [CMake][] as a build s
 
 To build either run the shell scripts in the order configure -> build -> run, or just run all.sh once.
 
-This was made to learn about basics of Computer graphics, C++, CMake, and simple Bash scripting with the help of the book by ![Gabriel Gambetta](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
+This was made to learn about basics of Computer graphics, C++, CMake, and simple Bash scripting with the help of the book by [Gabriel Gambetta](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
 
 ## Dependencies
 
