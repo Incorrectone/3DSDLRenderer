@@ -6,6 +6,38 @@ To build either run the shell scripts in the order configure -> build -> run, or
 
 This was made to learn about basics of Computer graphics, C++, CMake, and simple Bash scripting with the help of the book by [Gabriel Gambetta](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
 
+## TO-DO
+
+Orignally I wanted to learn how rendering math worked, but as I read through and found more interest in raytracing
+
+So the goal has expanded, I still plan to make rasterization in the engine but that comes after learning how to render a semi accurate black hole. Regardless of how much math and Physics I need to learn.
+
+### Goals
+Will update and make them detailed as I learn about it.
+
+- [ ] Finish Gabriel Gambetta books Raytracing last chapter tasks
+- [ ] Implement basic black hole mechanics
+    - [ ] Introduce gravity mechanics.
+    - [ ] Deploy basic gravity affected ray tracing methods.
+    - [ ] Catch up on the basic mathematics needed for the task.
+    - [ ] Introduce a sky box for better viewing of the black hole.
+    - [ ] Add distorting effect of light.
+- [ ] Implement the accretion disk (Currently following and seeing on some tutorials that the accretion disks can just be a thin plane)
+    - [ ] Introduce volumetrics to the engine.
+    - [ ] Create shaders/some equivalent for custom volumetrics.
+    - [ ] Use the introduced volumetrics to create an accretion disk.
+- [ ] Introduce Movement, for simple animations 
+    - [ ] Movement of camera.
+    - [ ] (if possible) Movement of objects including volumetrics.
+- [ ] Introduce planets
+    - [ ] Sphere but with normals and depth.
+    - [ ] Somehow introduce atmosphere (volumetric or simpler.)
+- [ ] Introduce better cmake configurations for debug and production builds.
+- [ ] Introduce parallelism
+    - [ ] Use multiple cores in CPU.
+    - [ ] Use GPU accelration.
+- [ ] Start the work on rasterization.
+
 ## Dependencies
 
 - [Git][]
