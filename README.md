@@ -16,6 +16,17 @@ So the goal has expanded, I still plan to make rasterization in the engine but t
 Will update and make them detailed as I learn about it.
 
 - [ ] Finish Gabriel Gambetta books Raytracing last chapter tasks
+    - [x] Arbitrary Camera Positioning
+    - [ ] Performance Optimizations
+        - Caching Immutable Values
+        - Shadow Optimization
+        - Spatial Structures
+        - Subsampling
+    - [ ] Supporting Other Primitives
+    - [ ] Constructive solid geometry
+    - [ ] Transparency
+        - Refraction
+    - [ ] Supersampling
 - [ ] Implement basic black hole mechanics
     - [ ] Introduce gravity mechanics.
     - [ ] Deploy basic gravity affected ray tracing methods.
