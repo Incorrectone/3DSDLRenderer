@@ -23,7 +23,7 @@ double ComputeLighting(Vector3D<double> Point, Vector3D<double> Normal, Vector3D
             if(constants::lightList[i].type == 'p'){
                 //
                 vectortoLight = constants::lightList[i].direction - Point;
-            } else if(constants::lightList[i].type == 'a'){ 
+            } else if(constants::lightList[i].type == 'd'){ 
                 //
                 vectortoLight = constants::lightList[i].direction;
             }
