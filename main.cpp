@@ -1,5 +1,6 @@
 // Structs and Constants
 #include "vectors.h"
+#include "matrix.h"
 #include "objects.h"
 #include "constants.h"
 
@@ -35,7 +36,13 @@ int main(void){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-	Vector3D<double> viewportCamera {0 ,0 ,0};
+	Vector3D<double> viewportCamera {0, 3, 0};
+
+	// yaw, pitch, and roll
+	// https://en.wikipedia.org/wiki/Rotation_matrix
+	Vector3D<double> CameraRotation {0.785, 0, 0};
+	double rotationMat[3][3];
+	rotationMatrix(CameraRotation, rotationMat);
 
 	SDL_Event event; // Basic Event Union
 	SDL_Window* window = NULL; // The Window we will be rendering to
@@ -67,7 +74,7 @@ int main(void){
 
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y);
+			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat);
 			Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
 			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}

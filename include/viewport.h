@@ -23,18 +23,27 @@ Vector2D IntersectRaySphere(
     Sphere sphere
     );
 
+/*
+    Checks whether a ray intersects a plane, with respect to Camera and viewport coordinates
+*/
 Vector2D IntersectRayPlane(
     Vector3D<double> Camera, 
     Vector3D<double> viewportCoordinates, 
     Plane plane
     );
 
+/*
+    Applys the correct intersection function based on object type
+*/
 Vector2D IntersectRay(
     Vector3D<double> Camera, 
     Vector3D<double> viewportCoordinates, 
     Object object
     );
 
+/*
+    Finds the closest intersection the Camera to an object from the object list
+*/
 returnType ClosestIntersection(
     Vector3D<double> Camera, 
     Vector3D<double> viewportCoordinates, 

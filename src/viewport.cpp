@@ -68,7 +68,6 @@ Vector2D IntersectRay(Vector3D<double> Camera, Vector3D<double> viewportCoordina
  
 }
 
-
 returnType ClosestIntersection(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, double t_min, double t_max){
     
     double closest_intersection = std::numeric_limits<double>::max();
