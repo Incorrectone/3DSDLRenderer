@@ -47,5 +47,6 @@ CTestTestfile.cmake
 _deps
 
 /build/
+/assets/images/
 
 /[bB][Uu][Ii][Ll][Dd]/

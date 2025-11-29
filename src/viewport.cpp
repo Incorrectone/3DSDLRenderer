@@ -2,6 +2,7 @@
 #include "objects.h"
 #include "constants.h"
 
+#include "skybox.h"
 #include "viewport.h"
 #include "shader.h"
 
@@ -97,7 +98,7 @@ Vector3D<double> TraceRay(Vector3D<double> Camera, Vector3D<double> viewportCoor
     double closest_intersection = temp.closest_intersection;
 
     if(closest_object.valid == -1){
-        return constants::BACKGROUND_COLOR;
+        return getSkyboxColor(viewportCoordinates);
     }
 
     Vector3D<double> Normal;

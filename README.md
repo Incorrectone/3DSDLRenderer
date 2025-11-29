@@ -6,6 +6,8 @@ To build either run the shell scripts in the order configure -> build -> run, or
 
 This was made to learn about basics of Computer graphics, C++, CMake, and simple Bash scripting with the help of the book by [Gabriel Gambetta](https://gabrielgambetta.com/computer-graphics-from-scratch/index.html)
 
+Skybox images from [Emil Persson](https://www.humus.name/index.php?page=Textures) from OpenGL tutorial.
+
 ## TO-DO
 
 Orignally I wanted to learn how rendering math worked, but as I read through and found more interest in raytracing

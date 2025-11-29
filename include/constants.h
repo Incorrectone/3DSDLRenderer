@@ -18,9 +18,8 @@ namespace constants
     constexpr double VEIWPORT_DISTANCE { 1 };
     constexpr int FIELDOFVIEW { 53 }; // in Degrees
 
-
-    constexpr int SCREEN_WIDTH { 1600 };
-    constexpr int SCREEN_HEIGHT { 1600 };
+    constexpr int SCREEN_WIDTH { 800 };
+    constexpr int SCREEN_HEIGHT { 800 };
 
     const int numberofObjects = 4;
 	extern Object objList[numberofObjects];

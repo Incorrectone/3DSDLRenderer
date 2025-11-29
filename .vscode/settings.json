@@ -61,8 +61,11 @@
         "iomanip": "cpp",
         "span": "cpp",
         "variant": "cpp",
-        "ranges": "cpp"
+        "ranges": "cpp",
+        "cstring": "cpp",
+        "text_encoding": "cpp"
     },
     "cmake.configureOnOpen": true,
-    "cmake.sourceDirectory": "/home/incor/Projects/3DSDLRenderer"
+    "cmake.sourceDirectory": "/home/incor/Projects/3DSDLRenderer",
+    "idf.pythonInstallPath": "/usr/bin/python"
 }

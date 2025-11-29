@@ -5,6 +5,7 @@
 #include "constants.h"
 
 // Functions
+#include "skybox.h"
 #include "shader.h"
 #include "viewport.h"
 #include "putPixel.h"
@@ -13,6 +14,7 @@
 #include "SDL.h"
 
 // Standard Library
+#include <array>
 #include <iostream>
 
 // For Mesuring Rendering Time
@@ -36,16 +38,26 @@ int main(void){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-	Vector3D<double> viewportCamera {0, 3, 0};
+	Vector3D<double> viewportCamera {0, 1, 0};
 
 	// yaw, pitch, and roll
 	// https://en.wikipedia.org/wiki/Rotation_matrix
-	Vector3D<double> CameraRotation {0.785, 0, 0};
+	Vector3D<double> CameraRotation {0.392, 0, 0}; //0.785
 	double rotationMat[3][3];
 	rotationMatrix(CameraRotation, rotationMat);
 
 	SDL_Event event; // Basic Event Union
 	SDL_Window* window = NULL; // The Window we will be rendering to
+
+	// Test the Skybox
+	const char * skyboxFaces[] = {"assets/images/posx.jpg", 
+											  "assets/images/negx.jpg", 
+											  "assets/images/posy.jpg", 
+											  "assets/images/negy.jpg", 
+											  "assets/images/posz.jpg", 
+											  "assets/images/negz.jpg"};
+	// Now initialize the skybox
+	initializeSkybox(skyboxFaces, 6);
 
 	// Surface gives Blit Access to Pixels on CPU
 	// SDL_Renderer works on GPU 
@@ -73,8 +85,9 @@ int main(void){
 	SDL_LockSurface( screenSurface );
 
 	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
+		#pragma omp parallel for schedule(static)
 		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat);
+			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat).normalize();
 			Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
 			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 		}
@@ -94,6 +107,9 @@ int main(void){
             break;
 		}
 	}
+
+	// Free the skybox Images
+	freeSkybox();
 
 	return 0;
 }
