@@ -77,9 +77,9 @@ struct Object : type_ID, Shape{
         valid = 1;
         
         if(type == 'p')
-            object.plane;
+            object.plane = Plane();
         if(type == 's')
-            object.sphere;
+            object.sphere = Sphere();
     }
 
     Object(Vector3D<double> vec, double r, Vector3D<double> P1, Vector3D<double> P2, Vector3D<double> P3, Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) {

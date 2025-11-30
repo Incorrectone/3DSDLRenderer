@@ -33,7 +33,7 @@ Will update and make them detailed as I learn about it.
     - [ ] Introduce gravity mechanics.
     - [ ] Deploy basic gravity affected ray tracing methods.
     - [ ] Catch up on the basic mathematics needed for the task.
-    - [ ] Introduce a sky box for better viewing of the black hole.
+    - [x] Introduce a sky box for better viewing of the black hole.
     - [ ] Add distorting effect of light.
 - [ ] Implement the accretion disk (Currently following and seeing on some tutorials that the accretion disks can just be a thin plane)
     - [ ] Introduce volumetrics to the engine.

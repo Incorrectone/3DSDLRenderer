@@ -4,20 +4,15 @@
 
 // Basic Pixel Changing function
 void putPixel(SDL_Surface* surface, int canvasX, int canvasY, Uint32 color){
+    int screenX = (constants::SCREEN_WIDTH / 2) + canvasX;
+    int screenY = (constants::SCREEN_HEIGHT / 2) - canvasY - 1; // Added -1 here
 
-	// If the coordinates are outside the screen, Does Nothing
-	if(canvasX > (constants::SCREEN_WIDTH / 2) || canvasX < -(constants::SCREEN_WIDTH / 2))
-		return (void)1;
-	if(canvasY > (constants::SCREEN_HEIGHT / 2) || canvasY < -(constants::SCREEN_HEIGHT / 2))
-		return (void)1;
-	
-	// Pg. 3
-	int screenX = (constants::SCREEN_WIDTH / 2) + canvasX;
-	int screenY = (constants::SCREEN_HEIGHT / 2) - canvasY;
+    if(screenX < 0 || screenX >= surface->w || screenY < 0 || screenY >= surface->h) {
+        return; 
+    }
 
-	Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
+    Uint32 * const target_pixel = (Uint32 *) ((Uint8 *) surface->pixels
                                              + screenY * surface->pitch
                                              + screenX * surface->format->BytesPerPixel);
-	*target_pixel = color;
-	return (void)0;
+    *target_pixel = color;
 }

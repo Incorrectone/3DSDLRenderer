@@ -38,11 +38,11 @@ int main(void){
 
     auto start = std::chrono::high_resolution_clock::now();
 
-	Vector3D<double> viewportCamera {0, 1, 0};
+	Vector3D<double> viewportCamera {0, 0, 0};
 
 	// yaw, pitch, and roll
 	// https://en.wikipedia.org/wiki/Rotation_matrix
-	Vector3D<double> CameraRotation {0.392, 0, 0}; //0.785
+	Vector3D<double> CameraRotation {0, 0, 0}; //0.785
 	double rotationMat[3][3];
 	rotationMatrix(CameraRotation, rotationMat);
 

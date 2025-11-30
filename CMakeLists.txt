@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.22.1)
 
 project(Renderer)
 
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+# set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -g -fsanitize=address")
+# set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address")
+
 find_package(OpenMP REQUIRED)
 
 add_subdirectory(external/SDL2)
