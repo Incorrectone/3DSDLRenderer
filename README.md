@@ -63,19 +63,6 @@ Will update and make them detailed as I learn about it.
 ```sh
 sudo apt install git build-essential pkg-config cmake cmake-data libsdl2-dev
 ```
-<!--
-**Optional packages:**
-
-- [SDL2_image][] library
-- [SDL2_ttf][] library
-- [SDL2_net][] library
-- [SDL2_mixer][] library
-- [SDL2_gfx][] library
-
-```sh
-sudo apt install libsdl2-image-dev libsdl2-ttf-dev libsdl2-net-dev libsdl2-mixer-dev libsdl2-gfx-dev
-```
--->
 
 ## Build instructions
 

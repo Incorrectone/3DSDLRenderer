@@ -47,7 +47,7 @@ int initializeSkybox(const char** imagePaths, const int count) {
     for(int i = 0; i < numberOfFaces; i++){
         skyboxFaces[i] = imagePaths[i];
         data[i] = stbi_load(skyboxFaces[i].c_str(), &width[i], &height[i], &channels[i], 3);
-        if( data[i] == NULL){
+        if( data[i] == NULL ){
             std::cout << "Error loading Skybox Image file {" << i << "}" << std::endl;
             for(int j = 0; j < i; j++){
                 if(data[j]){
