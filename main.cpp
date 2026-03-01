@@ -83,18 +83,22 @@ int main(void){
 	screenSurface = SDL_GetWindowSurface(window);
 
 	SDL_LockSurface( screenSurface );
-
-	for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++){
-		#pragma omp parallel for schedule(static)
-		for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-			Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat).normalize();
-			Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
-			putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
+    constexpr double number_of_frames = 120;
+	for (int cam = 0; cam <= number_of_frames; cam++) {
+		viewportCamera.y = ( 2 / number_of_frames ) * cam;
+		viewportCamera.z = ( 2 / number_of_frames ) * cam;
+		for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++) {
+			#pragma omp parallel for schedule(static)
+			for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
+				const Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat).normalize();
+				const Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
+				putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
+			}
 		}
+		SDL_UnlockSurface( screenSurface );
+		SDL_UpdateWindowSurface(window);
 	}
 
-	SDL_UnlockSurface( screenSurface );
-	SDL_UpdateWindowSurface(window);
 
 	auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
