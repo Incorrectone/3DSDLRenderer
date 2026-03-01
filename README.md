@@ -39,8 +39,8 @@ Will update and make them detailed as I learn about it.
     - [ ] Introduce volumetrics to the engine.
     - [ ] Create shaders/some equivalent for custom volumetrics.
     - [ ] Use the introduced volumetrics to create an accretion disk.
-- [ ] Introduce Movement, for simple animations 
-    - [ ] Movement of camera.
+- [x] Introduce Movement, for simple animations 
+    - [x] Movement of camera.
     - [ ] (if possible) Movement of objects including volumetrics.
 - [ ] Introduce planets
     - [ ] Sphere but with normals and depth.
