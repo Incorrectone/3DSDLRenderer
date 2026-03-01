@@ -12,7 +12,7 @@ struct type_ID{
     char type; // Type for primitive shapes 
     int valid;
 
-    type_ID(char TYPE = 'u', int ID = -1) : uniqueID{ID}, type{TYPE}, valid{-1} {}
+    type_ID(const char TYPE = 'u', const int ID = -1) : uniqueID{ID}, type{TYPE}, valid{-1} {}
 };
 
 struct Shape{  
@@ -20,21 +20,21 @@ struct Shape{
     int specular;
     double reflective;
 
-    Shape(Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) : color{COLOR}, specular{SPECULAR}, reflective{REFLECTION} {} // General Access Constructor
+    Shape(const Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), const int SPECULAR = -1, const double REFLECTION = -1) : color{COLOR}, specular{SPECULAR}, reflective{REFLECTION} {} // General Access Constructor
 };
 
 struct Sphere{
     Vector3D<double> center;
     double radius;
-    
-    Sphere(Vector3D<double> CENTER = Vector3D<double>({0, 0, 0}), double RADIUS = 1) : center{CENTER}, radius{RADIUS} {} 
+
+    Sphere(const Vector3D<double> &CENTER = Vector3D<double>({0, 0, 0}), const double RADIUS = 1) : center{CENTER}, radius{RADIUS} {}
 };
 
 struct Plane{
     Vector3D<double> normal;
     double rh;
 
-    Plane(Vector3D<double> NORMAL = Vector3D<double>({0, 0, 0}), double RIGHT = 0) : normal{NORMAL}, rh{RIGHT} {} 
+    Plane(const Vector3D<double> &NORMAL = Vector3D<double>({0, 0, 0}), const double RIGHT = 0) : normal{NORMAL}, rh{RIGHT} {}
 };
 
 struct Triangle{
@@ -44,7 +44,11 @@ struct Triangle{
     Vector3D<double> p2;
     Vector3D<double> p3;
 
-    Triangle(Vector3D<double> NORMAL = Vector3D<double>({0, 0, 0}), double RIGHT = 1, Vector3D<double> P1 = Vector3D<double>({0, 0, 0}), Vector3D<double> P2 = Vector3D<double>({0, 1, 0}), Vector3D<double> P3 = Vector3D<double>({0, 0, 1})) : normal{NORMAL}, rh{RIGHT}, p1{P1}, p2{P2}, p3{P3} {}
+    Triangle(const Vector3D<double> &NORMAL = Vector3D<double>({0, 0, 0}), const double RIGHT = 1,
+        const Vector3D<double> &P1 = Vector3D<double>({0, 0, 0}),
+        const Vector3D<double> &P2 = Vector3D<double>({0, 1, 0}),
+        const Vector3D<double> &P3 = Vector3D<double>({0, 0, 1}))
+        : normal{NORMAL}, rh{RIGHT}, p1{P1}, p2{P2}, p3{P3} {}
 };
 
 union universalObj{

@@ -9,11 +9,11 @@
 #include <limits>
 #include <cmath>
 
-Vector3D<double> ReflectedRay(Vector3D<double> Normal, Vector3D<double> raytobeReflected){
+Vector3D<double> ReflectedRay(const Vector3D<double> &Normal, const Vector3D<double> &raytobeReflected){
     return 2 * Normal * Normal.dot(raytobeReflected) - raytobeReflected;
 }
 
-Vector3D<double> CanvasToViewport(int canvasX, int canvasY){
+Vector3D<double> CanvasToViewport(const int canvasX, const int canvasY){
     Vector3D<double> viewportCoordinates;
 
     // Pg. 16
@@ -24,29 +24,29 @@ Vector3D<double> CanvasToViewport(int canvasX, int canvasY){
     return viewportCoordinates;
 }
 
-Vector2D IntersectRaySphere(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Sphere sphere){
-    
-    double radius = sphere.radius;
+Vector2D IntersectRaySphere(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const Sphere &sphere){
+
+    const double radius = sphere.radius;
     
     Vector3D<double> CameraToSphere = Camera - sphere.center;
     
     double a = viewportCoordinates.dot(viewportCoordinates);
-    double b = CameraToSphere.dot(viewportCoordinates) * 2.0;
+    double b = CameraToSphere.dot(viewportCoordinates);
     double c = CameraToSphere.dot(CameraToSphere) - (radius * radius);
 
-    double discriminant = b * b - 4 * a * c;
+    double discriminant = b * b - a * c;
 
     if(discriminant < 0.0){
         return {std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
     }
 
-    double t1 = ( - b + std::sqrt(discriminant) ) / (a * 2.0);
-    double t2 = ( - b - std::sqrt(discriminant) ) / (a * 2.0);
+    double t1 = ( - b - std::sqrt(discriminant) ) / (a);
+    double t2 = ( - b + std::sqrt(discriminant) ) / (a);
 
     return {t1, t2};
 }
 
-Vector2D IntersectRayPlane(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Plane plane){
+Vector2D IntersectRayPlane(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const Plane &plane){
     
     double check = plane.normal.dot(-1 * viewportCoordinates);
 
@@ -61,28 +61,25 @@ Vector2D IntersectRayPlane(Vector3D<double> Camera, Vector3D<double> viewportCoo
     return {t1, t2};
 }
 
-Vector2D IntersectRay(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, Object object){
+Vector2D IntersectRay(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, Object object){
     if(object.type == 's')
         return IntersectRaySphere(Camera, viewportCoordinates, object.object.sphere);
     else if(object.type == 'p')
-        return IntersectRayPlane(Camera, viewportCoordinates, object.object.plane);   
- 
+        return IntersectRayPlane(Camera, viewportCoordinates, object.object.plane);
 }
 
-returnType ClosestIntersection(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, double t_min, double t_max){
+returnType ClosestIntersection(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const double t_min, const double t_max){
     
-    double closest_intersection = std::numeric_limits<double>::max();
+    double closest_intersection = t_max;
     Object closest_object;
 
     for(int i = 0; i < constants::numberofObjects; i++){
         auto [t1, t2] = IntersectRay(Camera, viewportCoordinates, constants::objList[i]);
         
-        
-        if( (t1 <= t_max && t1 >= t_min) && t1 < closest_intersection){
+        if(t1 >= t_min && t1 < closest_intersection){
             closest_intersection = t1;
             closest_object = constants::objList[i];
-        }
-        if( (t2 <= t_max && t2 >= t_min) && t2 < closest_intersection){
+        }else if(t2 >= t_min && t2 < closest_intersection){
             closest_intersection = t2;
             closest_object = constants::objList[i];
         }
@@ -91,7 +88,7 @@ returnType ClosestIntersection(Vector3D<double> Camera, Vector3D<double> viewpor
     return {closest_object, closest_intersection};
 }
 
-Vector3D<double> TraceRay(Vector3D<double> Camera, Vector3D<double> viewportCoordinates, double t_min, double t_max, int reflection_recursive){
+Vector3D<double> TraceRay(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const double t_min, const double t_max, const int reflection_recursive){
     
     returnType temp = ClosestIntersection(Camera, viewportCoordinates, t_min, t_max);
     Object closest_object = temp.returnedObj;

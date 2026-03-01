@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-double ComputeLighting(Vector3D<double> Point, Vector3D<double> Normal, Vector3D<double> directiontoViewport, int specular){
+double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &Normal, const Vector3D<double> &directiontoViewport, const int specular){
     
     double intensity = 0.0;
     
@@ -29,13 +29,11 @@ double ComputeLighting(Vector3D<double> Point, Vector3D<double> Normal, Vector3D
             }
 
             // Shadows
-            returnType temp = ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max());
-            if(temp.returnedObj.valid != -1)
+            if(const returnType temp = ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max()); temp.returnedObj.valid != -1)
                 continue;
             // Diffuse
 
-            double dotproductNnL = vectortoLight.dot(Normal);
-            if(dotproductNnL > 0){
+            if(const double dotproductNnL = vectortoLight.dot(Normal); dotproductNnL > 0){
                 intensity += constants::lightList[i].intensity * dotproductNnL/(Normal.modulus() * vectortoLight.modulus());
             }
 
@@ -44,9 +42,8 @@ double ComputeLighting(Vector3D<double> Point, Vector3D<double> Normal, Vector3D
             if(specular != -1){
 
                 Vector3D<double> reflectionofvectortoLight = ReflectedRay(Normal, vectortoLight);
-              
-                double dotproductRnD = reflectionofvectortoLight.dot(directiontoViewport);
-                if(dotproductRnD > 0){
+
+                if(const double dotproductRnD = reflectionofvectortoLight.dot(directiontoViewport); dotproductRnD > 0){
                     intensity += constants::lightList[i].intensity * pow(dotproductRnD/(directiontoViewport.modulus() * reflectionofvectortoLight.modulus()), specular);
                     
                 } 

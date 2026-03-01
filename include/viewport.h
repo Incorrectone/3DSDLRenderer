@@ -6,7 +6,7 @@
 #include "vectors.h"
 #include "objects.h"
 
-Vector3D<double> ReflectedRay(Vector3D<double> Normal, Vector3D<double> raytobeReflected);
+Vector3D<double> ReflectedRay(const Vector3D<double> &Normal, const Vector3D<double> &raytobeReflected);
 
 /*
     Since Viewport is a screen in 3D
@@ -18,26 +18,26 @@ Vector3D<double> CanvasToViewport(int canvasX, int canvasY);
     Checks whether a ray intersects a sphere, with respect to Camera and viewport coordinates
 */
 Vector2D IntersectRaySphere(
-    Vector3D<double> Camera, 
-    Vector3D<double> viewportCoordinates, 
-    Sphere sphere
+    const Vector3D<double> &Camera,
+    const Vector3D<double> &viewportCoordinates,
+    const Sphere &sphere
     );
 
 /*
     Checks whether a ray intersects a plane, with respect to Camera and viewport coordinates
 */
 Vector2D IntersectRayPlane(
-    Vector3D<double> Camera, 
-    Vector3D<double> viewportCoordinates, 
-    Plane plane
+    const Vector3D<double> &Camera,
+    const Vector3D<double> &viewportCoordinates,
+    const Plane &plane
     );
 
 /*
     Applys the correct intersection function based on object type
 */
 Vector2D IntersectRay(
-    Vector3D<double> Camera, 
-    Vector3D<double> viewportCoordinates, 
+    const Vector3D<double> &Camera,
+    const Vector3D<double> &viewportCoordinates,
     Object object
     );
 
@@ -45,9 +45,9 @@ Vector2D IntersectRay(
     Finds the closest intersection the Camera to an object from the object list
 */
 returnType ClosestIntersection(
-    Vector3D<double> Camera, 
-    Vector3D<double> viewportCoordinates, 
-    double t_min, 
+    const Vector3D<double> &Camera,
+    const Vector3D<double> &viewportCoordinates,
+    double t_min,
     double t_max
 );
 
@@ -56,8 +56,8 @@ returnType ClosestIntersection(
     Object list currently uses Spheres but will Change
 */
 Vector3D<double> TraceRay(
-    Vector3D<double> Camera, 
-    Vector3D<double> viewportCoordinates, 
+    const Vector3D<double> &Camera,
+    const Vector3D<double> &viewportCoordinates,
     double t_min, 
     double t_max,  
     int reflection_recursive

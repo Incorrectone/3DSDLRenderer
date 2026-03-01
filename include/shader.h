@@ -7,9 +7,9 @@
 #include "objects.h"
 
 double ComputeLighting(
-    Vector3D<double> Point,
-    Vector3D<double> Normal,
-    Vector3D<double> directiontoViewport,
+    const Vector3D<double> &Point,
+    const Vector3D<double> &Normal,
+    const Vector3D<double> &directiontoViewport,
     int specular
 );
 
