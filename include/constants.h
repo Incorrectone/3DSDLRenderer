@@ -12,6 +12,7 @@ namespace constants
     const Vector3D BACKGROUND_COLOR {0, 0, 0};
 
     const int RECURSION_DEPTH { 3 };
+	const double NORMALIZE_THRESHOLD { 1e-12 };
 
     constexpr double VEIWPORT_WIDTH { 1 };
     constexpr double VEIWPORT_HEIGHT { 1 };

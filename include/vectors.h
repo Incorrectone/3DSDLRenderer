@@ -128,13 +128,17 @@ template<typename D>
 
 template<typename T>
     Vector3D<T>& Vector3D<T>::normalize(){
-        T len = modulus();
-        if (len > 0) {
-            T invLen = 1 / len; 
-            x *= invLen;
-            y *= invLen;
-            z *= invLen;
+        T length_squared = x * x + y * y + z * z;
+        T threshold = static_cast<T>(1e-6);
+
+        if (length_squared < threshold || std::abs(length_squared - static_cast<T>(1)) < threshold) {
+            return *this;
         }
+
+        T invLen = static_cast<T>(1) / std::sqrt(length_squared);
+        x *= invLen;
+        y *= invLen;
+        z *= invLen;
         return *this;
     }
 
