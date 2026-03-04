@@ -83,7 +83,7 @@ int main(void){
 	screenSurface = SDL_GetWindowSurface(window);
 
 	SDL_LockSurface( screenSurface );
-    constexpr double number_of_frames = 120;
+    constexpr double number_of_frames = 60;
 	for (int cam = 0; cam <= number_of_frames; cam++) {
 		viewportCamera.y = ( 2 / number_of_frames ) * cam;
 		viewportCamera.z = ( 2 / number_of_frames ) * cam;

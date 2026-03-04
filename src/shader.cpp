@@ -29,7 +29,9 @@ double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &No
             }
 
             // Shadows
-            if(const returnType temp = ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max()); temp.returnedObj.valid != -1)
+            vectortoLight = vectortoLight.normalize();
+            const returnType temp = ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max());
+            if(temp.returnedObj != nullptr && temp.returnedObj->valid != -1)
                 continue;
             // Diffuse
 

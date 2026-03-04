@@ -47,8 +47,8 @@ Will update and make them detailed as I learn about it.
     - [ ] Somehow introduce atmosphere (volumetric or simpler.)
 - [ ] Introduce better cmake configurations for debug and production builds.
 - [ ] Introduce parallelism
-    - [ ] Use multiple cores in CPU.
-    - [ ] Use GPU accelration.
+    - [x] Use multiple cores in CPU. (Currently Done, kinda...)
+    - [ ] Use GPU acceleration.
 - [ ] Start the work on rasterization.
 
 ## Dependencies

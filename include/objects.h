@@ -97,7 +97,7 @@ struct Object : type_ID, Shape{
 };
 
 struct returnType{
-        Object returnedObj;
+        Object * returnedObj;
         double closest_intersection;
 };
 
