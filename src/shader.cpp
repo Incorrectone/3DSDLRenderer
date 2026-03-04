@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &Normal, const Vector3D<double> &directiontoViewport, const int specular){
+double ComputeLighting(const Ray &ray_object, const Vector3D<double> &Normal, const int specular){
     
     double intensity = 0.0;
     
@@ -22,7 +22,7 @@ double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &No
 
             if(constants::lightList[i].type == 'p'){
                 //
-                vectortoLight = constants::lightList[i].direction - Point;
+                vectortoLight = constants::lightList[i].direction - ray_object.origin;
             } else if(constants::lightList[i].type == 'd'){ 
                 //
                 vectortoLight = constants::lightList[i].direction;
@@ -30,7 +30,11 @@ double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &No
 
             // Shadows
             vectortoLight = vectortoLight.normalize();
-            const returnType temp = ClosestIntersection(Point, vectortoLight, 0.0001, std::numeric_limits<double>::max());
+            const Ray shadow_ray = {
+                ray_object.origin,
+                vectortoLight
+            };
+            const returnType temp = ClosestIntersection(shadow_ray, 0.0001, std::numeric_limits<double>::max());
             if(temp.returnedObj != nullptr && temp.returnedObj->valid != -1)
                 continue;
             // Diffuse
@@ -45,8 +49,8 @@ double ComputeLighting(const Vector3D<double> &Point, const Vector3D<double> &No
 
                 Vector3D<double> reflectionofvectortoLight = ReflectedRay(Normal, vectortoLight);
 
-                if(const double dotproductRnD = reflectionofvectortoLight.dot(directiontoViewport); dotproductRnD > 0){
-                    intensity += constants::lightList[i].intensity * pow(dotproductRnD/(directiontoViewport.modulus() * reflectionofvectortoLight.modulus()), specular);
+                if(const double dotproductRnD = reflectionofvectortoLight.dot(ray_object.direction); dotproductRnD > 0){
+                    intensity += constants::lightList[i].intensity * pow(dotproductRnD/(ray_object.direction.modulus() * reflectionofvectortoLight.modulus()), specular);
                     
                 } 
             }

@@ -87,11 +87,15 @@ int main(void){
 	for (int cam = 0; cam <= number_of_frames; cam++) {
 		viewportCamera.y = ( 2 / number_of_frames ) * cam;
 		viewportCamera.z = ( 2 / number_of_frames ) * cam;
+		#pragma omp parallel for schedule(static)
 		for(int y = -constants::SCREEN_HEIGHT / 2; y < constants::SCREEN_HEIGHT / 2; y++) {
-			#pragma omp parallel for schedule(static)
 			for(int x = -constants::SCREEN_WIDTH / 2; x < constants::SCREEN_WIDTH / 2; x++){
-				const Vector3D<double> viewportCoordinates = CanvasToViewport(x, y).MatMul(rotationMat).normalize();
-				const Vector3D<int> color = TraceRay(viewportCamera, viewportCoordinates, 1, std::numeric_limits<double>::max(), constants::RECURSION_DEPTH);
+				const Ray camera_ray = {viewportCamera,
+									  CanvasToViewport(x, y).MatMul(rotationMat).normalize()};
+				const Vector3D<int> color = TraceRay(camera_ray,
+							1,
+							std::numeric_limits<double>::max(),
+							constants::RECURSION_DEPTH);
 				putPixel(screenSurface, x, y, SDL_MapRGB(screenSurface->format, color.x, color.y, color.z));
 			}
 		}

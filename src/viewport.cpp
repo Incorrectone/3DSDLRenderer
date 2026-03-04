@@ -24,13 +24,13 @@ Vector3D<double> CanvasToViewport(const int canvasX, const int canvasY){
     return viewportCoordinates;
 }
 
-Vector2D IntersectRaySphere(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const Sphere &sphere){
+Vector2D IntersectRaySphere(const Ray &ray_object, const Sphere &sphere){
 
     const double radius = sphere.radius;
     
-    Vector3D<double> CameraToSphere = Camera - sphere.center;
+    Vector3D<double> CameraToSphere = ray_object.origin - sphere.center;
 
-    double b = CameraToSphere.dot(viewportCoordinates);
+    double b = CameraToSphere.dot(ray_object.direction);
     double c = CameraToSphere.dot(CameraToSphere) - (radius * radius);
 
     double discriminant = b * b - c;
@@ -45,35 +45,35 @@ Vector2D IntersectRaySphere(const Vector3D<double> &Camera, const Vector3D<doubl
     return {t1, t2};
 }
 
-Vector2D IntersectRayPlane(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const Plane &plane){
+Vector2D IntersectRayPlane(const Ray &ray_object, const Plane &plane){
     
-    double check = plane.normal.dot(-1 * viewportCoordinates);
+    double check = plane.normal.dot(-1 * ray_object.direction);
 
     if (check == 0.0){
         return {std::numeric_limits<double>::max(), std::numeric_limits<double>::max()};
     }
 
-    double t1 = (plane.rh - plane.normal.dot(Camera)) * ( 1 / plane.normal.dot(viewportCoordinates) );
+    double t1 = (plane.rh - plane.normal.dot(ray_object.origin)) * ( 1 / plane.normal.dot(ray_object.direction) );
     
     double t2 = t1;
 
     return {t1, t2};
 }
 
-Vector2D IntersectRay(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, Object object){
+Vector2D IntersectRay(const Ray &ray_object, Object object){
     if(object.type == 's')
-        return IntersectRaySphere(Camera, viewportCoordinates, object.object.sphere);
+        return IntersectRaySphere(ray_object, object.object.sphere);
     else if(object.type == 'p')
-        return IntersectRayPlane(Camera, viewportCoordinates, object.object.plane);
+        return IntersectRayPlane(ray_object, object.object.plane);
 }
 
-returnType ClosestIntersection(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const double t_min, const double t_max){
+returnType ClosestIntersection(const Ray &ray_object, const double t_min, const double t_max){
     
     double closest_intersection = t_max;
     Object * closest_object = nullptr;
 
     for(int i = 0; i < constants::numberofObjects; i++){
-        auto [t1, t2] = IntersectRay(Camera, viewportCoordinates, constants::objList[i]);
+        auto [t1, t2] = IntersectRay(ray_object, constants::objList[i]);
         
         if(t1 >= t_min && t1 < closest_intersection){
             closest_intersection = t1;
@@ -87,19 +87,19 @@ returnType ClosestIntersection(const Vector3D<double> &Camera, const Vector3D<do
     return {closest_object, closest_intersection};
 }
 
-Vector3D<double> TraceRay(const Vector3D<double> &Camera, const Vector3D<double> &viewportCoordinates, const double t_min, const double t_max, const int reflection_recursive){
+Vector3D<double> TraceRay(const Ray &ray_object, const double t_min, const double t_max, const int reflection_recursive){
 
-    returnType temp = ClosestIntersection(Camera, viewportCoordinates, t_min, t_max);
+    returnType temp = ClosestIntersection(ray_object, t_min, t_max);
     const Object * closest_object = temp.returnedObj;
     const double closest_intersection = temp.closest_intersection;
 
     if(closest_object == nullptr || closest_object->valid == -1){
-        return getSkyboxColor(viewportCoordinates);
+        return getSkyboxColor(ray_object.direction);
     }
 
     Vector3D<double> Normal;
 
-    Vector3D<double> pointofIntersection = Camera + closest_intersection * viewportCoordinates;
+    Vector3D<double> pointofIntersection = ray_object.origin + closest_intersection * ray_object.direction;
     if(closest_object->type == 's'){
         Normal = pointofIntersection - closest_object->object.sphere.center;
         Normal = (1 / Normal.modulus()) * Normal;
@@ -108,15 +108,25 @@ Vector3D<double> TraceRay(const Vector3D<double> &Camera, const Vector3D<double>
         Normal = (1 / Normal.modulus()) * Normal;
     }
 
-    Vector3D<double> local_color = ComputeLighting(pointofIntersection, Normal, -1.0 * viewportCoordinates, closest_object->specular) * closest_object->color;
+    const Ray lighting_ray = {
+        pointofIntersection,
+        -1.0 * ray_object.direction
+    };
+
+    Vector3D<double> local_color = ComputeLighting(lighting_ray,
+        Normal,
+        closest_object->specular) * closest_object->color;
 
     const double reflective = closest_object->reflective;
     if ((reflection_recursive <= 0) || (reflective <= 0)){
         return local_color.colorFit();
     }
 
-    const Vector3D<double> Reflected_ray = ReflectedRay(Normal, -1.0 * viewportCoordinates).normalize();
-    const Vector3D<double> reflective_color = TraceRay(pointofIntersection, Reflected_ray, 0.001, t_max, reflection_recursive - 1);
+    const Ray Reflected_ray = {
+        pointofIntersection,
+        ReflectedRay(Normal, -1.0 * ray_object.direction).normalize()
+    };
+    const Vector3D<double> reflective_color = TraceRay(Reflected_ray, 0.001, t_max, reflection_recursive - 1);
 
     return (((1 - reflective) * local_color) + (reflective * reflective_color)).colorFit();
 }

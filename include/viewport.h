@@ -18,8 +18,7 @@ Vector3D<double> CanvasToViewport(int canvasX, int canvasY);
     Checks whether a ray intersects a sphere, with respect to Camera and viewport coordinates
 */
 Vector2D IntersectRaySphere(
-    const Vector3D<double> &Camera,
-    const Vector3D<double> &viewportCoordinates,
+    const Ray &ray_object,
     const Sphere &sphere
     );
 
@@ -27,8 +26,7 @@ Vector2D IntersectRaySphere(
     Checks whether a ray intersects a plane, with respect to Camera and viewport coordinates
 */
 Vector2D IntersectRayPlane(
-    const Vector3D<double> &Camera,
-    const Vector3D<double> &viewportCoordinates,
+    const Ray &ray_object,
     const Plane &plane
     );
 
@@ -36,8 +34,7 @@ Vector2D IntersectRayPlane(
     Applys the correct intersection function based on object type
 */
 Vector2D IntersectRay(
-    const Vector3D<double> &Camera,
-    const Vector3D<double> &viewportCoordinates,
+    const Ray &ray_object,
     Object object
     );
 
@@ -45,8 +42,7 @@ Vector2D IntersectRay(
     Finds the closest intersection the Camera to an object from the object list
 */
 returnType ClosestIntersection(
-    const Vector3D<double> &Camera,
-    const Vector3D<double> &viewportCoordinates,
+    const Ray &ray_object,
     double t_min,
     double t_max
 );
@@ -56,8 +52,7 @@ returnType ClosestIntersection(
     Object list currently uses Spheres but will Change
 */
 Vector3D<double> TraceRay(
-    const Vector3D<double> &Camera,
-    const Vector3D<double> &viewportCoordinates,
+    const Ray &ray_object,
     double t_min, 
     double t_max,  
     int reflection_recursive

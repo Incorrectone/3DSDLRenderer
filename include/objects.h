@@ -7,6 +7,11 @@
 
 #include <iostream>
 
+struct Ray {
+    Vector3D<double> origin;
+    Vector3D<double> direction;
+};
+
 struct type_ID{ 
     int uniqueID; // Unique ID Dunno how to implement
     char type; // Type for primitive shapes 
