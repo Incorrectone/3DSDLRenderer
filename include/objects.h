@@ -114,7 +114,7 @@ struct Light{
     int valid;
 
     Light () {};
-    Light(char TYPE, double INTENSITY ,Vector3D<double> DIRECTION, Vector3D<double> COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
+    Light(char TYPE, double INTENSITY , const Vector3D<double> &DIRECTION, const Vector3D<double> &COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
 };
 
 #endif

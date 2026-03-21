@@ -25,8 +25,8 @@ namespace constants {
 	Light lightList[numberofLights];
 }
 
-int main(void){
-
+int main(){
+	// USe vector from std Cpp
     constants::objList[0] = Object({0, -1, 3}, 1, 's', {255, 0, 0}, 500, 0.2);
     constants::objList[1] = Object({2, 0.0, 4.0}, 1, 's', {0, 0, 255}, 500, 0.3);
     constants::objList[2] = Object({-2, 0, 4}, 1, 's', {0, 255, 0}, 10, 0.4);
@@ -36,7 +36,7 @@ int main(void){
     constants::lightList[1] = Light('p', 0.6, {2 ,1 ,0}, {255, 0, 0});
     constants::lightList[2] = Light('d', 0.2, {1, 4, 4}, {255, 0, 0});
 
-    auto start = std::chrono::high_resolution_clock::now();
+    const auto start = std::chrono::high_resolution_clock::now();
 
 	Vector3D<double> viewportCamera {0, 0, 0};
 
@@ -47,7 +47,7 @@ int main(void){
 	rotationMatrix(CameraRotation, rotationMat);
 
 	SDL_Event event; // Basic Event Union
-	SDL_Window* window = NULL; // The Window we will be rendering to
+	SDL_Window* window = nullptr; // The Window we will be rendering to
 
 	// Test the Skybox
 	const char * skyboxFaces[] = {"assets/images/posx.jpg", 
@@ -61,7 +61,7 @@ int main(void){
 
 	// Surface gives Blit Access to Pixels on CPU
 	// SDL_Renderer works on GPU 
-	SDL_Surface* screenSurface = NULL; // The Surface that fills the Window
+	SDL_Surface* screenSurface = nullptr; // The Surface that fills the Window
 
 	// Starting up Video System of SDL
 	// https://www.libsdl.org/release/SDL-1.2.15/docs/html/guidebasicsinit.html
@@ -74,7 +74,7 @@ int main(void){
 	window = SDL_CreateWindow("3D Renderer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, constants::SCREEN_WIDTH, constants::SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 	
 	// Check If window Pointer got created
-	if(window == NULL){
+	if(window == nullptr){
 		std::cout << "Window could not be created! SDL_Error: " <<  SDL_GetError() << "\n";
 		return -1;
 	}
@@ -107,10 +107,10 @@ int main(void){
 	auto stop = std::chrono::high_resolution_clock::now();
     auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
 
-	std::cout << "Time Taken to Render: " << duration.count() / (double)1000000 << " s\n";
+	std::cout << "Time Taken to Render: " << duration.count() / static_cast<double>(1000000) << " s\n";
 
 	// Game Loop
-	while(1){
+	while(true){
         if(SDL_PollEvent(&event) && event.type == SDL_QUIT){
             break;
 		}

@@ -27,7 +27,8 @@ if(OpenMP_CXX_FOUND)
     target_link_libraries(custom PUBLIC OpenMP::OpenMP_CXX)
 endif()
 
-add_executable(${CMAKE_PROJECT_NAME} main.cpp)
+add_executable(${CMAKE_PROJECT_NAME} main.cpp
+        include/objects_new.h)
 
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -Wall -Wextra)
 

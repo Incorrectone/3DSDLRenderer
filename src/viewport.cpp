@@ -73,6 +73,7 @@ returnType ClosestIntersection(const Ray &ray_object, const double t_min, const 
     Object * closest_object = nullptr;
 
     for(int i = 0; i < constants::numberofObjects; i++){
+        // use intersectRay
         auto [t1, t2] = IntersectRay(ray_object, constants::objList[i]);
         
         if(t1 >= t_min && t1 < closest_intersection){
@@ -100,6 +101,7 @@ Vector3D<double> TraceRay(const Ray &ray_object, const double t_min, const doubl
     Vector3D<double> Normal;
 
     Vector3D<double> pointofIntersection = ray_object.origin + closest_intersection * ray_object.direction;
+    //get normal member func
     if(closest_object->type == 's'){
         Normal = pointofIntersection - closest_object->object.sphere.center;
         Normal = (1 / Normal.modulus()) * Normal;
@@ -112,11 +114,12 @@ Vector3D<double> TraceRay(const Ray &ray_object, const double t_min, const doubl
         pointofIntersection,
         -1.0 * ray_object.direction
     };
-
+    // get specular and get Color
     Vector3D<double> local_color = ComputeLighting(lighting_ray,
         Normal,
         closest_object->specular) * closest_object->color;
 
+    // get roughness
     const double reflective = closest_object->reflective;
     if ((reflection_recursive <= 0) || (reflective <= 0)){
         return local_color.colorFit();
