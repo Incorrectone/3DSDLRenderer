@@ -7,6 +7,7 @@
 #ifndef RENDERER_OBJECTS_NEW_H
 #define RENDERER_OBJECTS_NEW_H
 
+#include "objects.h"
 #include "vectors.h"
 
 struct Object;
@@ -22,15 +23,9 @@ struct IntersectionReturn {
     const Object * hit_object_ptr;
 };
 
+// matierial
+
 struct Object {
-    Vector3D<int> base_color;
-    double base_specular;
-    double base_roughness;
-
-    bool is_visible;
-
-    Object(Vector3D<int> c, int spec, double rough, bool visib);
-
     virtual ~Object() = default;
 
     virtual IntersectionReturn intersectRay(const Ray& ray) const = 0;
@@ -39,9 +34,20 @@ struct Object {
     virtual double getRoughness(const Vector3D<double> &Point) const = 0;
     virtual double getSpecular(const Vector3D<double> &Point) const = 0;
 };
-
 // Sphere, Plane, Triangles, and custom objects
 
+struct Sphere: public Object{
+private:
+    Vector3D<int> base_color;
+    double base_specular;
+    double base_roughness;
+
+    bool is_visible;
+public:
+
+};
+
+//spectrum
 
 // Have to change this too, to use virtual functions
 struct Light{
