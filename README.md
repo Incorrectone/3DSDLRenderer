@@ -95,6 +95,8 @@ See [IDE_USAGE.md](IDE_USAGE.md) for details.
 -->
 ## License (idk why this is here)
 
+GPLv3
+
 Author: incorrectone
 
 This project is distributed under the terms of the MIT license
