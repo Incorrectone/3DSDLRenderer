@@ -1,120 +1,49 @@
+//
+// Created by incor on 3/4/26.
+//
+
 #pragma once
 
-#ifndef OBJECTS_H
-#define OBJECTS_H
+#ifndef RENDERER_OBJECTS_NEW_H
+#define RENDERER_OBJECTS_NEW_H
 
 #include "vectors.h"
+#include "spectrum.h"
+#include "materials.h"
 
-#include <iostream>
+struct Object;
 
 struct Ray {
     Vector3D<double> origin;
     Vector3D<double> direction;
 };
 
-struct type_ID{ 
-    int uniqueID; // Unique ID Dunno how to implement
-    char type; // Type for primitive shapes 
-    int valid;
-
-    type_ID(const char TYPE = 'u', const int ID = -1) : uniqueID{ID}, type{TYPE}, valid{-1} {}
+struct IntersectionReturn {
+    bool hit;
+    double distance;
+    const Object * hit_object_ptr;
 };
 
-struct Shape{  
-    Vector3D<int> color;
-    int specular;
-    double reflective;
+struct Object {
+    virtual ~Object() = default;
 
-    Shape(const Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), const int SPECULAR = -1, const double REFLECTION = -1) : color{COLOR}, specular{SPECULAR}, reflective{REFLECTION} {} // General Access Constructor
+    virtual IntersectionReturn intersectRay(const Ray& ray) const = 0;
+    virtual Vector3D<double> getNormal(const Vector3D<double> &Point) const = 0;
+    virtual Vector3D<int> getColor(const Vector3D<double> &Point) const = 0;
+    virtual double getRoughness(const Vector3D<double> &Point) const = 0;
+    virtual double getSpecular(const Vector3D<double> &Point) const = 0;
+};
+// Sphere, Plane, Triangles, and custom objects
+
+struct Sphere: public Object{
+private:
+    Vector3D<int> base_color;
+    double base_specular;
+    double base_roughness;
+
+    bool is_visible;
+public:
+
 };
 
-struct Sphere{
-    Vector3D<double> center;
-    double radius;
-
-    Sphere(const Vector3D<double> &CENTER = Vector3D<double>({0, 0, 0}), const double RADIUS = 1) : center{CENTER}, radius{RADIUS} {}
-};
-
-struct Plane{
-    Vector3D<double> normal;
-    double rh;
-
-    Plane(const Vector3D<double> &NORMAL = Vector3D<double>({0, 0, 0}), const double RIGHT = 0) : normal{NORMAL}, rh{RIGHT} {}
-};
-
-struct Triangle{
-    Vector3D<double> normal;
-    double rh;
-    Vector3D<double> p1;
-    Vector3D<double> p2;
-    Vector3D<double> p3;
-
-    Triangle(const Vector3D<double> &NORMAL = Vector3D<double>({0, 0, 0}), const double RIGHT = 1,
-        const Vector3D<double> &P1 = Vector3D<double>({0, 0, 0}),
-        const Vector3D<double> &P2 = Vector3D<double>({0, 1, 0}),
-        const Vector3D<double> &P3 = Vector3D<double>({0, 0, 1}))
-        : normal{NORMAL}, rh{RIGHT}, p1{P1}, p2{P2}, p3{P3} {}
-};
-
-union universalObj{
-    Plane plane;
-    Sphere sphere;
-    Triangle triangle;
-    universalObj () {}
-};
-
-struct Object : type_ID, Shape{
-    universalObj object;
-
-    Object() : type_ID() {}
-
-    Object(Vector3D<double> vec, double r, char t, Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) {
-        type = t;
-        valid = 1;
-        color = COLOR;
-        specular = SPECULAR;
-        reflective = REFLECTION;
-        
-        if(type == 'p')
-            object.plane = {vec, r};
-        if(type == 's')
-            object.sphere = {vec, r};
-    }
-    
-    Object(char t) : Shape() {
-        type = t;
-        valid = 1;
-        
-        if(type == 'p')
-            object.plane = Plane();
-        if(type == 's')
-            object.sphere = Sphere();
-    }
-
-    Object(Vector3D<double> vec, double r, Vector3D<double> P1, Vector3D<double> P2, Vector3D<double> P3, Vector3D<int> COLOR = Vector3D<int>({126, 126, 126}), int SPECULAR = -1, double REFLECTION = -1) {
-        type = 't';
-        valid = 1;
-        color = COLOR;
-        specular = SPECULAR;
-        reflective = REFLECTION;
-        object.triangle = {vec, r, P1, P2, P3};
-    }
-};
-
-struct returnType{
-        Object * returnedObj;
-        double closest_intersection;
-};
-
-struct Light{
-    char type;
-    double intensity;
-    Vector3D<double> direction;
-    Vector3D<int> color;
-    int valid;
-
-    Light () {};
-    Light(char TYPE, double INTENSITY , const Vector3D<double> &DIRECTION, const Vector3D<double> &COLOR) : type{TYPE}, intensity{INTENSITY}, direction{DIRECTION}, color{COLOR}, valid{1} {};
-};
-
-#endif
+#endif //RENDERER_OBJECTS_NEW_H

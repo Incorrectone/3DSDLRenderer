@@ -49,4 +49,8 @@ _deps
 /build/
 /assets/images/
 
+/.vscode/
 /[bB][Uu][Ii][Ll][Dd]/
+
+// ignore all files with .ignore at the end
+*.ignore 

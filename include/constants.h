@@ -22,6 +22,9 @@ namespace constants
     constexpr int SCREEN_WIDTH { 800 };
     constexpr int SCREEN_HEIGHT { 800 };
 
+	constexpr double Lambda_min { 360 };
+	constexpr double Lambda_max { 830 };
+
     const int numberofObjects = 4;
 	extern Object objList[numberofObjects];
     
